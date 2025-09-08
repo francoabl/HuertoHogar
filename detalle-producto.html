@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="huertohogar-web.css">
+    <style>
+        body {
+            background: #f8fdf4;
+        }
+        .detalle-producto {
+            max-width: 900px;
+            margin: 80px auto 40px auto;
+            padding: 0;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 16px rgba(60,120,60,0.10);
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            overflow: hidden;
+        }
+        .detalle-img {
+            flex: 1 1 350px;
+            background: #f8fdf4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px;
+        }
+        .detalle-img img {
+            max-width: 340px;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(60,120,60,0.08);
+        }
+        .detalle-info {
+            flex: 2 1 0;
+            padding: 40px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .detalle-info h2 {
+            margin-top: 0;
+            color: #388e3c;
+            font-weight: 700;
+        }
+        .detalle-info .precio {
+            color: #388e3c;
+            font-size: 2em;
+            margin: 12px 0 18px 0;
+            font-weight: 600;
+        }
+        .detalle-info .categoria {
+            font-size: 1em;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+        .detalle-info .descripcion {
+            margin-bottom: 24px;
+            color: #444;
+        }
+        .btn-agregar {
+            background: #388e3c;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 24px;
+            font-size: 1.1em;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(60,120,60,0.08);
+            transition: background 0.2s;
+            margin-bottom: 10px;
+        }
+        .btn-agregar:hover {
+            background: #2c6c2c;
+        }
+        .btn-volver {
+            display: inline-block;
+            padding: 8px 18px;
+            background: #fff;
+            color: #388e3c;
+            border: 2px solid #388e3c;
+            border-radius: 6px;
+            text-decoration: none;
+            margin-top: 8px;
+            font-weight: 500;
+            transition: background 0.2s, color 0.2s;
+        }
+        .btn-volver:hover {
+            background: #388e3c;
+            color: #fff;
+        }
+        .icon-check {
+            color: #388e3c;
+            margin-right: 8px;
+        }
+        @media (max-width: 768px) {
+            .detalle-producto {
+                flex-direction: column;
+                max-width: 98vw;
+                margin: 70px auto 20px auto;
+            }
+            .detalle-img {
+                padding: 24px 16px 0 16px;
+            }
+            .detalle-info {
+                padding: 24px 16px 24px 16px;
+            }
+            .detalle-img img {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-outline-primary" href="login.html">
+                            <i class="fas fa-user me-2"></i>Ingresar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="detalle-producto" id="detalleProducto">
+        <!-- Aquí se cargará el detalle dinámicamente -->
+    </div>
+    <div class="container" id="recomendadosContainer" style="max-width:900px; margin:32px auto 0 auto;">
+        <!-- Aquí se mostrarán los productos recomendados -->
+    </div>
+    <script>
+        // Obtiene el id del producto desde la URL: detalle-producto.html?id=123
+        function getProductId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Datos embebidos como fallback
+        const productosEmbebidos = [
+            {
+                "id": 1,
+                "nombre": "Manzanas Rojas",
+                "precio": 1200,
+                "categoria": "frutas frescas",
+                "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
+                "imagen": "assets/img/productos/manzanas.jpg"
+            },
+            {
+                "id": 2,
+                "nombre": "Miel Orgánica",
+                "precio": 2500,
+                "categoria": "organicos",
+                "descripcion": "Miel pura y natural de abejas locales, sin procesamientos químicos",
+                "imagen": "assets/img/productos/miel.webp"
+            },
+            {
+                "id": 3,
+                "nombre": "Leche Fresca",
+                "precio": 1800,
+                "categoria": "lacteos",
+                "descripcion": "Leche fresca de vacas locales, rica en nutrientes",
+                "imagen": "assets/img/productos/leche.webp"
+            },
+            {
+                "id": 4,
+                "nombre": "Naranjas Dulces",
+                "precio": 1100,
+                "categoria": "frutas frescas",
+                "descripcion": "Naranjas jugosas y dulces, perfectas para jugos naturales",
+                "imagen": "assets/img/productos/naranjas.webp"
+            },
+            {
+                "id": 5,
+                "nombre": "Espinacas Orgánicas",
+                "precio": 900,
+                "categoria": "verduras",
+                "descripcion": "Espinacas frescas cultivadas sin pesticidas, ricas en hierro",
+                "imagen": "assets/img/productos/espinacas.webp"
+            },
+            {
+                "id": 6,
+                "nombre": "Zanahorias Frescas",
+                "precio": 800,
+                "categoria": "verduras",
+                "descripcion": "Zanahorias frescas y crujientes, perfectas para ensaladas",
+                "imagen": "assets/img/productos/zanahorias.webp"
+            }
+        ];
+
+        function getCategoriaDisplayName(categoria) {
+            const displayNames = {
+                'frutas frescas': 'Frutas Frescas',
+                'verduras': 'Verduras Orgánicas',
+                'organicos': 'Productos Orgánicos',
+                'lacteos': 'Productos Lácteos'
+            };
+            return displayNames[categoria?.toLowerCase()] || categoria;
+        }
+
+        function mostrarMensajeAgregado() {
+            const btn = document.getElementById('btnAgregarCarro');
+            btn.innerHTML = '<i class="fas fa-check icon-check"></i>Agregado al carro';
+            btn.disabled = true;
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-shopping-cart me-2"></i>Agregar al carro';
+                btn.disabled = false;
+            }, 1500);
+        }
+
+        async function cargarDetalleProducto() {
+            const id = getProductId();
+            if (!id) {
+                document.getElementById('detalleProducto').innerHTML = '<p>No se especificó producto.</p>';
+                return;
+            }
+            let productos = [];
+            try {
+                const res = await fetch('productos.json');
+                const data = await res.json();
+                productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
+            } catch (e) {
+                productos = productosEmbebidos;
+            }
+            const producto = productos.find(p => String(p.id) === id);
+            if (!producto) {
+                document.getElementById('detalleProducto').innerHTML = '<p>Producto no encontrado.</p>';
+                return;
+            }
+            document.getElementById('detalleProducto').innerHTML = `
+                <div class="detalle-img">
+                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                </div>
+                <div class="detalle-info">
+                    <h2>${producto.nombre}</h2>
+                    <div class="categoria"><i class='fas fa-tag me-1'></i>${getCategoriaDisplayName(producto.categoria)}</div>
+                    <div class="precio">$${producto.precio.toLocaleString('es-CL')}</div>
+                    <div class="descripcion">${producto.descripcion}</div>
+                    <button id="btnAgregarCarro" class="btn-agregar"><i class="fas fa-shopping-cart me-2"></i>Agregar al carro</button>
+                    <a href="productos.html" class="btn-volver text-center"><i class="fas fa-arrow-left me-2"></i>Volver a productos</a>
+                </div>
+            `;
+            document.getElementById('btnAgregarCarro').addEventListener('click', mostrarMensajeAgregado);
+
+            // Mostrar productos recomendados de la misma categoría
+            mostrarRecomendados(productos, producto);
+        }
+
+        function mostrarRecomendados(productos, productoActual) {
+            const recomendadosContainer = document.getElementById('recomendadosContainer');
+            // Filtrar productos de la misma categoría, excluyendo el actual
+            const recomendados = productos.filter(p => p.categoria === productoActual.categoria && p.id !== productoActual.id);
+            if (recomendados.length === 0) {
+                recomendadosContainer.innerHTML = '';
+                return;
+            }
+            recomendadosContainer.innerHTML = `
+                <h3 class="mb-4 text-success"><i class="fas fa-star me-2"></i>Te puede interesar</h3>
+                <div class="row g-4">
+                    ${recomendados.map(prod => `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card h-100 shadow-sm producto-recomendado" style="cursor:pointer;" data-id="${prod.id}">
+                                <img src="${prod.imagen}" class="card-img-top" alt="${prod.nombre}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${prod.nombre}</h5>
+                                    <p class="card-text text-muted mb-2">${prod.descripcion || 'Producto fresco de calidad premium'}</p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="product-price">$${prod.precio.toLocaleString('es-CL')}</span>
+                                        <a href="detalle-producto.html?id=${prod.id}" class="btn btn-outline-success btn-sm"><i class="fas fa-eye me-1"></i>Ver detalle</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        
+
+        cargarDetalleProducto();
+    </script>
+</body>
+</html>

@@ -21,17 +21,23 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#inicio">Inicio</a>
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="productos.html">Productos</a>
+                        <a class="nav-link" href="productos.html">
+                            Productos
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#nosotros">Nosotros</a>
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#contacto">Contacto</a>
+                        <a class="nav-link" href="contacto.html">Contacto</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
                     <li class="nav-item ms-3">
                         <a class="btn btn-outline-primary" href="login.html">
                             <i class="fas fa-user me-2"></i>Ingresar
@@ -284,25 +290,25 @@
                 noProductsMessage.style.display = 'none';
                 
                 // Generar HTML de productos
-                container.innerHTML = productosFiltrados.map(producto => `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card product-card">
-                            <img src="${producto.imagen}" class="product-image" alt="${producto.nombre}" 
-                                 onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'">
-                            <div class="card-body">
-                                <h5 class="card-title">${producto.nombre}</h5>
-                                <p class="text-muted small mb-2">${producto.descripcion || 'Producto fresco de calidad premium'}</p>
-                                <p class="text-muted mb-2"><small>Categoría: ${getCategoriaDisplayName(producto.categoria)}</small></p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <span class="product-price">$${producto.precio.toLocaleString('es-CL')}</span>
-                                    <button class="btn btn-success btn-sm">
-                                        <i class="fas fa-shopping-cart me-1"></i>Agregar
-                                    </button>
+                    container.innerHTML = productosFiltrados.map(producto => `
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card product-card producto-clickable" data-id="${producto.id}" style="cursor:pointer;">
+                                <img src="${producto.imagen}" class="product-image" alt="${producto.nombre}" 
+                                     onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'">
+                                <div class="card-body">
+                                    <h5 class="card-title">${producto.nombre}</h5>
+                                    <p class="text-muted small mb-2">${producto.descripcion || 'Producto fresco de calidad premium'}</p>
+                                    <p class="text-muted mb-2"><small>Categoría: ${getCategoriaDisplayName(producto.categoria)}</small></p>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="product-price">$${producto.precio.toLocaleString('es-CL')}</span>
+                                        <button class="btn btn-success btn-sm">
+                                            <i class="fas fa-shopping-cart me-1"></i>Agregar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                `).join('');
+                    `).join('');
                 
                 console.log('Productos mostrados correctamente');
             }
@@ -372,17 +378,26 @@
                 btn.addEventListener('click', function() {
                     const categoria = this.getAttribute('data-categoria');
                     categoriaActual = categoria;
-                    
                     // Actualizar filtro activo
                     actualizarFiltroActivo(categoria);
-                    
                     // Mostrar productos filtrados
                     mostrarProductos(categoria);
-                    
                     // Actualizar URL sin recargar la página
                     const newUrl = categoria === 'todas' ? 'productos.html' : `productos.html?categoria=${encodeURIComponent(categoria)}`;
                     window.history.pushState({categoria: categoria}, '', newUrl);
                 });
+            });
+
+            // Delegación de evento para productos
+            document.getElementById('productsContainer').addEventListener('click', function(e) {
+                let card = e.target;
+                // Buscar el elemento con la clase producto-clickable
+                while (card && !card.classList.contains('producto-clickable')) {
+                    card = card.parentElement;
+                }
+                if (card && card.dataset.id) {
+                    window.location.href = `detalle-producto.html?id=${card.dataset.id}`;
+                }
             });
         });
 
