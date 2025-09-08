@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Producto</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/huertohogar-web.css">
+    <style>
+        body {
+            background: var(--light-bg);
+        }
+        
+        .breadcrumb-container {
+            margin-top: 100px;
+            margin-bottom: 2rem;
+        }
+        
+        .breadcrumb {
+            background: transparent;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .breadcrumb-item {
+            color: var(--light-green);
+        }
+        
+        .breadcrumb-item.active {
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+        
+        .breadcrumb-item a {
+            color: var(--light-green);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .breadcrumb-item a:hover {
+            color: var(--accent-green);
+        }
+        
+        .detalle-producto {
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            padding: 0;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.08);
+            border: 1px solid rgba(45, 80, 22, 0.05);
+            display: flex;
+            flex-direction: row;
+            gap: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .detalle-producto:hover {
+            box-shadow: 0 20px 50px rgba(45, 80, 22, 0.12);
+        }
+        
+        .detalle-img {
+            flex: 1 1 400px;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 50px 40px;
+            position: relative;
+        }
+        
+        .detalle-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="%23e8f5e8" opacity="0.3"/><circle cx="20" cy="30" r="1" fill="%237cb342" opacity="0.2"/><circle cx="80" cy="20" r="1.5" fill="%234a7c59" opacity="0.2"/></svg>') repeat;
+            opacity: 0.3;
+        }
+        
+        .detalle-img img {
+            max-width: 350px;
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(45, 80, 22, 0.15);
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+        }
+        
+        .detalle-img img:hover {
+            transform: scale(1.05);
+        }
+        
+        .detalle-info {
+            flex: 2 1 0;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .detalle-info h2 {
+            margin-top: 0;
+            color: var(--primary-green);
+            font-weight: 800;
+            font-size: 2.5rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+        
+        .detalle-info .categoria {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--accent-green), var(--fresh-green));
+            color: white;
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            width: fit-content;
+        }
+        
+        .detalle-info .precio {
+            color: var(--primary-green);
+            font-size: 2.8rem;
+            margin: 0 0 1.5rem 0;
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(45, 80, 22, 0.1);
+        }
+        
+        .detalle-info .descripcion {
+            margin-bottom: 2.5rem;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+        
+        .btn-agregar {
+            background: linear-gradient(135deg, var(--accent-green), var(--fresh-green));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 8px 25px rgba(123, 179, 66, 0.3);
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            width: fit-content;
+        }
+        
+        .btn-agregar:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(123, 179, 66, 0.4);
+            background: linear-gradient(135deg, var(--fresh-green), var(--accent-green));
+        }
+        
+        .btn-agregar:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-volver {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 30px;
+            background: white;
+            color: var(--accent-green);
+            border: 2px solid var(--accent-green);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: fit-content;
+        }
+        
+        .btn-volver:hover {
+            background: var(--accent-green);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 179, 66, 0.3);
+        }
+        
+        .icon-check {
+            color: white;
+            margin-right: 8px;
+        }
+        
+        .recomendados-section {
+            margin-top: 4rem;
+        }
+        
+        .recomendados-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-green);
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            
+        }
+
+        
+
+        .recomendados-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--fresh-green));
+            border-radius: 2px;
+        }
+        
+        .producto-recomendado {
+            background: white;
+            border: 1px solid rgba(45, 80, 22, 0.05);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card-link {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+        
+        .card-link:hover {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+        
+        .producto-recomendado:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(45, 80, 22, 0.15);
+            border-color: var(--accent-green);
+        }
+        
+        .producto-recomendado .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .producto-recomendado:hover .card-img-top {
+            transform: scale(1.1);
+        }
+        
+        .producto-recomendado .card-body {
+            padding: 1.5rem;
+        }
+        
+        .producto-recomendado .card-title {
+            color: var(--primary-green);
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .producto-recomendado .product-price {
+            color: var(--primary-green);
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+        
+        .btn-outline-success {
+            border-color: var(--accent-green);
+            color: var(--accent-green);
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-outline-success:hover {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .breadcrumb-container {
+                margin-top: 80px;
+                padding: 0 1rem;
+            }
+            
+            .detalle-producto {
+                flex-direction: column;
+                max-width: 95vw;
+                margin: 1rem auto 20px auto;
+            }
+            
+            .detalle-img {
+                padding: 30px 20px 10px 20px;
+            }
+            
+            .detalle-info {
+                padding: 30px 20px 30px 20px;
+            }
+            
+            .detalle-img img {
+                max-width: 100%;
+                max-height: 250px;
+            }
+            
+            .detalle-info h2 {
+                font-size: 2rem;
+            }
+            
+            .detalle-info .precio {
+                font-size: 2.2rem;
+            }
+            
+            .recomendados-title {
+                font-size: 1.8rem;
+                margin-bottom: 2rem;
+            }
+            .card-link {
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
+                    <li class="nav-item ms-3">
+                        <a class="btn btn-outline-primary" href="login.html">
+                            <i class="fas fa-user me-2"></i>Ingresar
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Breadcrumb -->
+    <div class="container breadcrumb-container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="huertohogar-web.html"><i class="fas fa-home me-1"></i>Inicio</a></li>
+                <li class="breadcrumb-item"><a href="productos.html">Productos</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="breadcrumbProducto">Detalle del Producto</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <div class="container">
+        <div class="detalle-producto" id="detalleProducto">
+            <!-- Aquí se cargará el detalle dinámicamente -->
+        </div>
+        <div class="recomendados-section" id="recomendadosContainer">
+            <!-- Aquí se mostrarán los productos recomendados -->
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="footer-title">
+                        <i class="fas fa-seedling me-2"></i>HuertoHogar
+                    </h5>
+                    <p class="mb-4">Del campo a tu mesa, productos frescos y naturales que cuidan tu salud y la de tu familia.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-icon me-3">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon me-3">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="footer-title">Navegación</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="huertohogar-web.html" class="footer-link">Inicio</a></li>
+                        <li><a href="productos.html" class="footer-link">Productos</a></li>
+                        <li><a href="nosotros.html" class="footer-link">Nosotros</a></li>
+                        <li><a href="contacto.html" class="footer-link">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="footer-title">Contacto</h6>
+                    <ul class="list-unstyled">
+                        <li class="footer-link mb-2">
+                            <i class="fas fa-phone me-2"></i>+56 9 1234 5678
+                        </li>
+                        <li class="footer-link mb-2">
+                            <i class="fas fa-envelope me-2"></i>info@huertohogar.cl
+                        </li>
+                        <li class="footer-link">
+                            <i class="fas fa-map-marker-alt me-2"></i>Santiago, Chile
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-12 mb-4">
+                    <h6 class="footer-title">Horarios</h6>
+                    <ul class="list-unstyled">
+                        <li class="footer-link mb-2">Lunes a Viernes: 8:00 - 18:00</li>
+                        <li class="footer-link mb-2">Sábados: 8:00 - 14:00</li>
+                        <li class="footer-link">Domingos: Cerrado</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 text-center text-md-start">&copy; 2024 HuertoHogar. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-0 text-center text-md-end">
+                        <a href="#" class="footer-link me-3">Términos de Servicio</a>
+                        <a href="#" class="footer-link">Política de Privacidad</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Obtiene el id del producto desde la URL: detalle-producto.html?id=123
+        function getProductId() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+        // Datos embebidos como fallback
+        const productosEmbebidos = [
+            {
+                "id": 1,
+                "nombre": "Manzanas Rojas",
+                "precio": 1200,
+                "categoria": "frutas frescas",
+                "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
+                "imagen": "../../public/assets/img/productos/manzanas.jpg"
+            },
+            {
+                "id": 2,
+                "nombre": "Miel Orgánica",
+                "precio": 2500,
+                "categoria": "organicos",
+                "descripcion": "Miel pura y natural de abejas locales, sin procesamientos químicos",
+                "imagen": "../../public/assets/img/productos/miel.webp"
+            },
+            {
+                "id": 3,
+                "nombre": "Leche Fresca",
+                "precio": 1800,
+                "categoria": "lacteos",
+                "descripcion": "Leche fresca de vacas locales, rica en nutrientes",
+                "imagen": "../../public/assets/img/productos/leche.webp"
+            },
+            {
+                "id": 4,
+                "nombre": "Naranjas Dulces",
+                "precio": 1100,
+                "categoria": "frutas frescas",
+                "descripcion": "Naranjas jugosas y dulces, perfectas para jugos naturales",
+                "imagen": "../../public/assets/img/productos/naranjas.webp"
+            },
+            {
+                "id": 5,
+                "nombre": "Espinacas Orgánicas",
+                "precio": 900,
+                "categoria": "verduras",
+                "descripcion": "Espinacas frescas cultivadas sin pesticidas, ricas en hierro",
+                "imagen": "../../public/assets/img/productos/espinacas.webp"
+            },
+            {
+                "id": 6,
+                "nombre": "Zanahorias Frescas",
+                "precio": 800,
+                "categoria": "verduras",
+                "descripcion": "Zanahorias frescas y crujientes, perfectas para ensaladas",
+                "imagen": "../../public/assets/img/productos/zanahorias.webp"
+            }
+        ];
+
+        function getCategoriaDisplayName(categoria) {
+            const displayNames = {
+                'frutas frescas': 'Frutas Frescas',
+                'verduras': 'Verduras Orgánicas',
+                'organicos': 'Productos Orgánicos',
+                'lacteos': 'Productos Lácteos'
+            };
+            return displayNames[categoria?.toLowerCase()] || categoria;
+        }
+
+        function mostrarMensajeAgregado() {
+            const btn = document.getElementById('btnAgregarCarro');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-check icon-check"></i>¡Agregado al carro!';
+            btn.disabled = true;
+            btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        async function cargarDetalleProducto() {
+            const id = getProductId();
+            if (!id) {
+                document.getElementById('detalleProducto').innerHTML = '<p>No se especificó producto.</p>';
+                return;
+            }
+            let productos = [];
+            try {
+                const res = await fetch('productos.json');
+                const data = await res.json();
+                productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
+            } catch (e) {
+                productos = productosEmbebidos;
+            }
+            const producto = productos.find(p => String(p.id) === id);
+            if (!producto) {
+                document.getElementById('detalleProducto').innerHTML = `
+                    <div class="text-center p-5">
+                        <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+                        <h3 class="text-muted">Producto no encontrado</h3>
+                        <p class="text-muted">El producto que buscas no existe o ha sido removido.</p>
+                        <a href="productos.html" class="btn btn-primary">
+                            <i class="fas fa-arrow-left me-2"></i>Volver a productos
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Actualizar breadcrumb
+            document.getElementById('breadcrumbProducto').textContent = producto.nombre;
+            document.getElementById('detalleProducto').innerHTML = `
+                <div class="detalle-img">
+                    <img src="${producto.imagen}" alt="${producto.nombre}" loading="lazy">
+                </div>
+                <div class="detalle-info">
+                    <h2>${producto.nombre}</h2>
+                    <div class="categoria">
+                        <i class='fas fa-tag me-2'></i>${getCategoriaDisplayName(producto.categoria)}
+                    </div>
+                    <div class="precio">$${producto.precio.toLocaleString('es-CL')}</div>
+                    <div class="descripcion">${producto.descripcion}</div>
+                    <button id="btnAgregarCarro" class="btn-agregar">
+                        <i class="fas fa-shopping-cart me-2"></i>Agregar al carro
+                    </button>
+                    <a href="productos.html" class="btn-volver">
+                        <i class="fas fa-arrow-left me-2"></i>Volver a productos
+                    </a>
+                </div>
+            `;
+            document.getElementById('btnAgregarCarro').addEventListener('click', mostrarMensajeAgregado);
+
+            // Mostrar productos recomendados de la misma categoría
+            mostrarRecomendados(productos, producto);
+        }
+
+        function mostrarRecomendados(productos, productoActual) {
+            const recomendadosContainer = document.getElementById('recomendadosContainer');
+            // Filtrar productos de la misma categoría, excluyendo el actual
+            const recomendados = productos.filter(p => p.categoria === productoActual.categoria && p.id !== productoActual.id);
+            if (recomendados.length === 0) {
+                recomendadosContainer.innerHTML = '';
+                return;
+            }
+            recomendadosContainer.innerHTML = `
+                <h3 class="recomendados-title">
+                    <i class="fas fa-star me-2"></i>Te puede interesar
+                </h3>
+                <div class="row g-4">
+                    ${recomendados.slice(0, 3).map(prod => `
+                        <div class="col-md-6 col-lg-4">
+                            <a class="card-link" href="detalle-producto.html?id=${prod.id}">
+                            <div class="card h-100 producto-recomendado" style="cursor:pointer;" data-id="${prod.id}">
+                                <img src="${prod.imagen}" class="card-img-top" alt="${prod.nombre}" loading="lazy">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">${prod.nombre}</h5>
+                                    <p class="card-text text-muted mb-3 flex-grow-1">${prod.descripcion || 'Producto fresco de calidad premium'}</p>
+                                    <div class="d-flex justify-content-between align-items-center mt-auto">
+                                        <span class="product-price">$${prod.precio.toLocaleString('es-CL')}</span>
+                                        <a href="detalle-producto.html?id=${prod.id}" class="btn btn-outline-success btn-sm">
+                                            <i class="fas fa-eye me-1"></i>Ver detalle
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+        cargarDetalleProducto();
+    </script>
+</body>
+</html>

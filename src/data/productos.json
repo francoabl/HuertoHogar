@@ -1,0 +1,54 @@
+{
+    "productos": [
+        {
+            "id": 1,
+            "nombre": "Manzanas Rojas",
+            "precio": 1200,
+            "categoria": "frutas frescas",
+            "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
+            "imagen": "assets/img/productos/manzanas.webp"
+        },
+        {
+            "id": 2,
+            "nombre": "Miel Orgánica",
+            "precio": 2500,
+            "categoria": "organicos",
+            "descripcion": "Miel pura y natural de abejas locales, sin procesamientos químicos",
+            "imagen": "assets/img/productos/miel.webp"
+        },
+        {
+            "id": 3,
+            "nombre": "Leche Fresca",
+            "precio": 1800,
+            "categoria": "lacteos",
+            "descripcion": "Leche fresca de vacas locales, rica en nutrientes",
+            "imagen": "assets/img/productos/leche.webp"
+        },
+        {
+            "id": 4,
+            "nombre": "Naranjas Dulces",
+            "precio": 1100,
+            "categoria": "frutas frescas",
+            "descripcion": "Naranjas jugosas y dulces, perfectas para jugos naturales",
+            "imagen": "assets/img/productos/naranjas.webp"
+        },
+        {
+            "id": 5,
+            "nombre": "Espinacas Orgánicas",
+            "precio": 900,
+            "categoria": "verduras",
+            "descripcion": "Espinacas frescas cultivadas sin pesticidas, ricas en hierro",
+            "imagen": "assets/img/productos/espinacas.webp"
+        },
+        {
+            "id": 6,
+            "nombre": "Zanahorias Frescas",
+            "precio": 800,
+            "categoria": "verduras",
+            "descripcion": "Zanahorias frescas y crujientes, perfectas para ensaladas",
+            "imagen": "assets/img/productos/zanahorias.webp"
+        }
+    ]
+}
+
+

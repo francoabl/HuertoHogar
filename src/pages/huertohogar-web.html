@@ -6,13 +6,13 @@
     <title>HuertoHogar - Del Campo a tu Mesa</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="huertohogar-web.css">
+        <link rel="stylesheet" href="../css/huertohogar-web.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="huertohogar-web.html">
                 <i class="fas fa-seedling me-2"></i>HuertoHogar
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#inicio">Inicio</a>
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="productos.html">
@@ -29,19 +29,32 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#nosotros">Nosotros</a>
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#contacto">Contacto</a>
+                        <a class="nav-link" href="contacto.html">Contacto</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="blog.html">Blog</a>
                     </li>
                     
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-outline-primary" href="login.html">
-                            <i class="fas fa-user me-2"></i>Ingresar
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
                         </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -261,7 +274,12 @@
     </footer>
 
 
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="huertohogar-web.js"></script>
+    <script src="../js/components/huertohogar-web.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/auth/demo-data.js"></script>
 </body>
 </html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - HuertoHogar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/huertohogar-web.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">
+                            Productos
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
+                        </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="hero-title">Acerca de HuertoHogar</h1>
+                    <p class="hero-subtitle">Conectando productores locales con familias que buscan alimentos frescos y naturales</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="feature-card mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <h2 class="mb-4" style="color: var(--primary-green); font-weight: 700;">Nuestra Historia</h2>
+                                <p class="lead mb-4">HuertoHogar nació de la pasión por conectar a las familias con productos frescos, naturales y de calidad directamente desde los huertos locales hasta sus hogares.</p>
+                                <p class="mb-4">Creemos en la importancia de una alimentación saludable y en el apoyo a los productores locales. Por eso, creamos una plataforma que facilita el acceso a productos orgánicos y frescos, eliminando intermediarios y garantizando la mejor calidad para nuestros clientes.</p>
+                                <p>Nuestro compromiso es brindar transparencia en el origen de cada producto, promover prácticas agrícolas sostenibles y contribuir al desarrollo de las comunidades rurales.</p>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="text-center">
+                                    <i class="fas fa-leaf" style="font-size: 8rem; color: var(--accent-green); opacity: 0.8;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Mission & Vision Section -->
+    <section class="py-5" style="background-color: var(--light-bg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-bullseye" style="font-size: 3rem; color: var(--accent-green);"></i>
+                        </div>
+                        <h3 class="text-center mb-4" style="color: var(--primary-green);">Nuestra Misión</h3>
+                        <p class="text-center">Facilitar el acceso a productos agrícolas frescos y de calidad, conectando directamente a productores locales con consumidores conscientes, promoviendo una alimentación saludable y el desarrollo sostenible de las comunidades rurales.</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <div class="feature-card h-100">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-eye" style="font-size: 3rem; color: var(--fresh-green);"></i>
+                        </div>
+                        <h3 class="text-center mb-4" style="color: var(--primary-green);">Nuestra Visión</h3>
+                        <p class="text-center">Ser la plataforma líder en el mercado de productos agrícolas frescos, reconocida por la calidad de nuestros productos, la transparencia en nuestros procesos y nuestro compromiso con la sostenibilidad ambiental y social.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 style="color: var(--primary-green); font-weight: 700;">Nuestro Equipo de Desarrollo</h2>
+                    <p class="lead">Conoce a los desarrolladores que hicieron posible HuertoHogar</p>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <!-- Developer 1 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="mb-4">
+                            <div class="developer-avatar mx-auto mb-3" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--accent-green), var(--fresh-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 style="color: var(--primary-green);">Agustín Aceval</h4>
+                        <p class="text-muted mb-3">Full Stack Developer</p>
+                        <p>Especialista en desarrollo web con experiencia en tecnologías modernas. Responsable de la arquitectura del sistema y la implementación de funcionalidades avanzadas.</p>
+                        <div class="mt-3">
+                            <i class="fab fa-github me-2" style="color: var(--accent-green);"></i>
+                            <i class="fab fa-linkedin" style="color: var(--accent-green);"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Developer 2 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="mb-4">
+                            <div class="developer-avatar mx-auto mb-3" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--light-green), var(--accent-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 style="color: var(--primary-green);">Aaron Gorigoitia</h4>
+                        <p class="text-muted mb-3">Frontend Developer</p>
+                        <p>Experto en experiencia de usuario y diseño de interfaces. Encargado de crear una experiencia intuitiva y atractiva para nuestros usuarios.</p>
+                        <div class="mt-3">
+                            <i class="fab fa-github me-2" style="color: var(--accent-green);"></i>
+                            <i class="fab fa-linkedin" style="color: var(--accent-green);"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Developer 3 -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="mb-4">
+                            <div class="developer-avatar mx-auto mb-3" style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--fresh-green), var(--light-green)); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="font-size: 2.5rem; color: white;"></i>
+                            </div>
+                        </div>
+                        <h4 style="color: var(--primary-green);">Franco Alarcón</h4>
+                        <p class="text-muted mb-3">Backend Developer</p>
+                        <p>Desarrollador backend con enfoque en la seguridad y performance. Responsable de la infraestructura del servidor y la gestión de datos.</p>
+                        <div class="mt-3">
+                            <i class="fab fa-github me-2" style="color: var(--accent-green);"></i>
+                            <i class="fab fa-linkedin" style="color: var(--accent-green);"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-5" style="background-color: var(--light-bg);">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center mb-5">
+                    <h2 style="color: var(--primary-green); font-weight: 700;">Nuestros Valores</h2>
+                    <p class="lead">Los principios que guían nuestro trabajo diario</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="feature-card text-center h-100">
+                        <i class="fas fa-heart mb-3" style="font-size: 2.5rem; color: var(--accent-green);"></i>
+                        <h5 style="color: var(--primary-green);">Calidad</h5>
+                        <p>Nos comprometemos a ofrecer solo los mejores productos, verificando la calidad en cada paso del proceso.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="feature-card text-center h-100">
+                        <i class="fas fa-handshake mb-3" style="font-size: 2.5rem; color: var(--fresh-green);"></i>
+                        <h5 style="color: var(--primary-green);">Confianza</h5>
+                        <p>Construimos relaciones duraderas basadas en la transparencia y el cumplimiento de nuestras promesas.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="feature-card text-center h-100">
+                        <i class="fas fa-leaf mb-3" style="font-size: 2.5rem; color: var(--light-green);"></i>
+                        <h5 style="color: var(--primary-green);">Sostenibilidad</h5>
+                        <p>Promovemos prácticas agrícolas responsables que cuiden el medio ambiente para las futuras generaciones.</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="feature-card text-center h-100">
+                        <i class="fas fa-users mb-3" style="font-size: 2.5rem; color: var(--accent-green);"></i>
+                        <h5 style="color: var(--primary-green);">Comunidad</h5>
+                        <p>Apoyamos a los productores locales y fortalecemos los vínculos entre campo y ciudad.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <div class="feature-card">
+                        <h3 class="mb-4" style="color: var(--primary-green);">¿Listo para probar nuestros productos?</h3>
+                        <p class="lead mb-4">Únete a nuestra comunidad y descubre la diferencia de los productos frescos del campo.</p>
+                        <a href="productos.html" class="btn btn-primary me-3">
+                            <i class="fas fa-shopping-cart me-2"></i>Ver Productos
+                        </a>
+                        <a href="registro.html" class="btn btn-outline-primary">
+                            <i class="fas fa-user-plus me-2"></i>Registrarse
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-seedling me-2"></i>HuertoHogar
+                    </h5>
+                    <p>Del campo a tu mesa, productos frescos y naturales para toda la familia.</p>
+                    <div class="social-links">
+                        <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h6 class="mb-3">Enlaces</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="huertohogar-web.html" class="text-light">Inicio</a></li>
+                        <li><a href="productos.html" class="text-light">Productos</a></li>
+                        <li><a href="nosotros.html" class="text-light">Nosotros</a></li>
+                        <li><a href="blog.html" class="text-light">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <h6 class="mb-3">Contacto</h6>
+                    <p><i class="fas fa-envelope me-2"></i>info@huertohogar.com</p>
+                    <p><i class="fas fa-phone me-2"></i>+595 21 123 456</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>Asunción, Paraguay</p>
+                </div>
+                <div class="col-lg-3 mb-4">
+                    <h6 class="mb-3">Newsletter</h6>
+                    <p>Recibe ofertas especiales y noticias sobre productos frescos.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Tu email">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0">&copy; 2024 HuertoHogar. Todos los derechos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>Desarrollado por Agustín Aceval, Aaron Gorigoitia y Franco Alarcón</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="huertohogar-web.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/demo-data.js"></script>
+</body>
+</html>
