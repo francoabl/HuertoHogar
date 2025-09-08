@@ -162,6 +162,7 @@
     <script src="../js/components/huertohogar-web.js"></script>
     <script src="../js/auth/auth.js"></script>
     <script src="../js/auth/demo-data.js"></script>
+    <script src="../js/cart/cart.js"></script>
     <script>
         // Variables globales
         let productos = [];
@@ -320,7 +321,13 @@
                                     <p class="text-muted mb-2"><small>Categoría: ${getCategoriaDisplayName(producto.categoria)}</small></p>
                                     <div class="d-flex justify-content-between align-items-center">
                                         <span class="product-price">$${producto.precio.toLocaleString('es-CL')}</span>
-                                        <button class="btn btn-success btn-sm">
+                                        <button class="btn btn-success btn-sm btn-add-to-cart" 
+                                                data-id="${producto.id}"
+                                                data-nombre="${producto.nombre}"
+                                                data-precio="${producto.precio}"
+                                                data-imagen="${producto.imagen}"
+                                                data-categoria="${producto.categoria}"
+                                                onclick="event.preventDefault(); event.stopPropagation(); return false;">
                                             <i class="fas fa-shopping-cart me-1"></i>Agregar
                                         </button>
                                     </div>
@@ -409,6 +416,11 @@
 
             // Delegación de evento para productos
             document.getElementById('productsContainer').addEventListener('click', function(e) {
+                // Si el clic es en un botón de carrito o sus hijos, no hacer nada
+                if (e.target.closest('.btn-add-to-cart')) {
+                    return;
+                }
+                
                 let card = e.target;
                 // Buscar el elemento con la clase producto-clickable
                 while (card && !card.classList.contains('producto-clickable')) {

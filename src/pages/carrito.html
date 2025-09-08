@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Carrito - HuertoHogar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/huertohogar-web.css">
+    <style>
+        body {
+            background: var(--light-bg);
+        }
+        
+        .cart-page {
+            margin-top: 100px;
+            margin-bottom: 50px;
+        }
+        
+        .cart-header {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            border-radius: 15px;
+        }
+        
+        .cart-item {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .cart-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            border: 2px solid #28a745;
+            background: white;
+            color: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quantity-btn:hover {
+            background: #28a745;
+            color: white;
+        }
+        
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 5px;
+        }
+        
+        .cart-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 120px;
+        }
+        
+        .empty-cart {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .btn-checkout {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+            background: linear-gradient(135deg, #20c997, #28a745);
+            color: white;
+        }
+        
+        .btn-continue {
+            border: 2px solid #28a745;
+            color: #28a745;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-continue:hover {
+            background: #28a745;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .remove-btn {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .remove-btn:hover {
+            background: #dc3545;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
+                        </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="cart-page">
+        <div class="container">
+            <!-- Header -->
+            <div class="cart-header text-center">
+                <h1><i class="fas fa-shopping-cart me-3"></i>Mi Carrito de Compras</h1>
+                <p class="lead mb-0">Revisa y gestiona tus productos seleccionados</p>
+            </div>
+
+            <!-- Cart Content -->
+            <div class="row">
+                <div class="col-lg-8">
+                    <div id="cartItems">
+                        <!-- Los productos del carrito se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <h4 class="mb-4"><i class="fas fa-calculator me-2"></i>Resumen del Pedido</h4>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Productos (<span id="totalItems">0</span>):</span>
+                            <span id="subtotal">$0</span>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>Envío:</span>
+                            <span class="text-success">Gratis</span>
+                        </div>
+                        
+                        <hr>
+                        
+                        <div class="d-flex justify-content-between mb-4">
+                            <strong>Total:</strong>
+                            <strong class="text-success" id="total">$0</strong>
+                        </div>
+                        
+                        <button class="btn btn-checkout mb-3" id="checkoutBtn">
+                            <i class="fas fa-credit-card me-2"></i>Proceder al Pago
+                        </button>
+                        
+                        <a href="productos.html" class="btn btn-continue">
+                            <i class="fas fa-shopping-basket me-2"></i>Seguir Comprando
+                        </a>
+                        
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <small class="text-muted">
+                                <i class="fas fa-shield-alt me-2"></i>
+                                Compra 100% segura. Tus datos están protegidos.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h3 class="footer-title">
+                        <i class="fas fa-seedling me-2"></i>HuertoHogar
+                    </h3>
+                    <p class="mb-4">Conectando familias chilenas con la frescura del campo desde hace más de 6 años.</p>
+                    <div class="d-flex">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="footer-title">Navegación</h4>
+                    <a href="huertohogar-web.html" class="footer-link">Inicio</a>
+                    <a href="productos.html" class="footer-link">Productos</a>
+                    <a href="nosotros.html" class="footer-link">Nosotros</a>
+                    <a href="contacto.html" class="footer-link">Contacto</a>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="footer-title">Productos</h4>
+                    <a href="productos.html?categoria=frutas frescas" class="footer-link">Frutas</a>
+                    <a href="productos.html?categoria=verduras" class="footer-link">Verduras</a>
+                    <a href="productos.html?categoria=organicos" class="footer-link">Orgánicos</a>
+                    <a href="productos.html?categoria=lacteos" class="footer-link">Lácteos</a>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="footer-title">Contacto</h4>
+                    <p><i class="fas fa-envelope me-2"></i>contacto@huertohogar.cl</p>
+                    <p><i class="fas fa-phone me-2"></i>+56 2 2345 6789</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>Santiago, Chile</p>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 2rem 0 1rem;">
+            <div class="text-center">
+                <p>&copy; 2024 HuertoHogar. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/components/huertohogar-web.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/auth/demo-data.js"></script>
+    <script src="../js/cart/cart.js"></script>
+    
+    <script>
+        // Script específico para la página del carrito
+        document.addEventListener('DOMContentLoaded', function() {
+            // Esperar a que el cartManager esté disponible
+            function initCartPage() {
+                if (window.cartManager) {
+                    renderCartPage();
+                    
+                    // Escuchar cambios en el carrito
+                    document.addEventListener('cartUpdated', function(e) {
+                        renderCartPage();
+                    });
+                    
+                    // Event listener para el botón de checkout
+                    document.getElementById('checkoutBtn').addEventListener('click', function() {
+                        if (window.cartManager.getTotalItems() === 0) {
+                            alert('Tu carrito está vacío. Agrega algunos productos antes de proceder al pago.');
+                            return;
+                        }
+                        
+                        // Aquí se podría implementar la lógica de checkout
+                        alert('Funcionalidad de pago en desarrollo. ¡Gracias por tu interés en HuertoHogar!');
+                    });
+                } else {
+                    // Si el cartManager no está listo, esperar un poco más
+                    setTimeout(initCartPage, 100);
+                }
+            }
+            
+            initCartPage();
+        });
+        
+        function renderCartPage() {
+            if (!window.cartManager) {
+                console.log('CartManager no está disponible aún');
+                return;
+            }
+            
+            const cartItems = window.cartManager.getCartItems();
+            const cartItemsContainer = document.getElementById('cartItems');
+            const totalItems = window.cartManager.getTotalItems();
+            const totalPrice = window.cartManager.getTotalPrice();
+            
+            console.log('Renderizando página del carrito. Items:', cartItems);
+            
+            // Actualizar resumen
+            document.getElementById('totalItems').textContent = totalItems;
+            document.getElementById('subtotal').textContent = `$${totalPrice.toLocaleString('es-CL')}`;
+            document.getElementById('total').textContent = `$${totalPrice.toLocaleString('es-CL')}`;
+            
+            if (cartItems.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart text-muted" style="font-size: 4rem;"></i>
+                        <h3 class="mt-4 mb-3">Tu carrito está vacío</h3>
+                        <p class="text-muted mb-4">Parece que aún no has agregado ningún producto a tu carrito.</p>
+                        <a href="productos.html" class="btn btn-primary btn-lg">
+                            <i class="fas fa-shopping-basket me-2"></i>Explorar Productos
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            cartItemsContainer.innerHTML = cartItems.map(item => `
+                <div class="cart-item" data-id="${item.id}">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <img src="${item.imagen}" alt="${item.nombre}" class="cart-item-image">
+                        </div>
+                        <div class="col-md-4">
+                            <h5 class="mb-1">${item.nombre}</h5>
+                            <small class="text-muted">${getCategoriaDisplayName(item.categoria)}</small>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="text-success fw-bold">$${item.precio.toLocaleString('es-CL')}</div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <input type="number" class="quantity-input" value="${item.quantity}" 
+                                       min="1" onchange="updateQuantity(${item.id}, this.value)">
+                                <button class="quantity-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <button class="remove-btn" onclick="removeItem(${item.id})" title="Eliminar producto">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 text-end">
+                            <strong>Subtotal: $${(item.precio * item.quantity).toLocaleString('es-CL')}</strong>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function updateQuantity(productId, newQuantity) {
+            const quantity = parseInt(newQuantity);
+            if (quantity < 1) return;
+            
+            window.cartManager.updateQuantity(productId, quantity);
+        }
+        
+        function removeItem(productId) {
+            if (confirm('¿Estás seguro de que quieres eliminar este producto del carrito?')) {
+                window.cartManager.removeProduct(productId);
+            }
+        }
+        
+        function getCategoriaDisplayName(categoria) {
+            const displayNames = {
+                'frutas frescas': 'Frutas Frescas',
+                'verduras': 'Verduras Orgánicas',
+                'organicos': 'Productos Orgánicos',
+                'lacteos': 'Productos Lácteos'
+            };
+            return displayNames[categoria?.toLowerCase()] || categoria;
+        }
+    </script>
+</body>
+</html>
