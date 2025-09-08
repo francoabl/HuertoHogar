@@ -108,10 +108,23 @@
                         <a class="nav-link" href="blog.html">Blog</a>
                     </li>
                     
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-outline-primary" href="login.html">
-                            <i class="fas fa-user me-2"></i>Ingresar
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
                         </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -253,21 +266,7 @@
                                 </a>
                             </div>
 
-                            <div class="divider">
-                                <span>Registrarse con</span>
-                            </div>
-
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <button class="btn btn-outline-secondary w-100">
-                                        <i class="fab fa-google me-2"></i>Google
-                                    </button>
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn btn-outline-secondary w-100">
-                                        <i class="fab fa-facebook-f me-2"></i>Facebook
-                                    </button>
-                                </div>
+                            
                             </div>
                         </div>
                     </div>
@@ -308,8 +307,13 @@
         </div>
     </footer>
 
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="huertohogar-web.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/demo-data.js"></script>
     <script>
         // Validación de fortaleza de contraseña
         document.getElementById('password').addEventListener('input', function() {
@@ -360,23 +364,56 @@
             
             // Validar que las contraseñas coincidan
             if (userData.password !== userData.confirmPassword) {
-                alert('Las contraseñas no coinciden');
+                AuthUI.showMessage('Las contraseñas no coinciden', 'danger');
+                highlightError('confirmPassword');
                 return;
             }
             
             // Validar términos aceptados
             if (!document.getElementById('acceptTerms').checked) {
-                alert('Debes aceptar los términos y condiciones');
+                AuthUI.showMessage('Debes aceptar los términos y condiciones', 'danger');
                 return;
             }
             
-            // Aquí puedes agregar la lógica de registro
-            console.log('Datos del usuario:', userData);
-            alert('Registro exitoso! Funcionalidad pendiente de implementar con backend/Supabase');
+            // Deshabilitar botón de submit
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Registrando...';
             
-            // Redireccionar a login o página principal
-            // window.location.href = 'login.html';
+            // Intentar registro
+            const result = auth.register(userData);
+            
+            if (result.success) {
+                AuthUI.showMessage(result.message, 'success');
+                AuthUI.showMessage('¡Ahora puedes iniciar sesión!', 'info');
+                
+                // Redireccionar a login después de un breve delay
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } else {
+                AuthUI.showMessage(result.message, 'danger');
+                
+                // Rehabilitar botón
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+                
+                // Destacar campo de email si ya existe
+                if (result.message.includes('correo electrónico')) {
+                    highlightError('email');
+                }
+            }
         });
+
+        // Función para destacar campos con error
+        function highlightError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('is-invalid');
+            setTimeout(() => {
+                field.classList.remove('is-invalid');
+            }, 3000);
+        }
     </script>
 </body>
 </html>

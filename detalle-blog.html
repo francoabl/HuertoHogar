@@ -51,7 +51,11 @@
   <!-- Blog Detail -->
   <section class="py-5 mt-5">
     <div class="container">
-      <div id="blog-detail" class="col-lg-8 mx-auto"></div>
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="feature-card" id="blog-detail"></div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -65,7 +69,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
   <script src="blog.js"></script>
   <script>
-    renderBlogDetail(); // función definida en blog.js
+    document.addEventListener('DOMContentLoaded', function() {
+      renderBlogDetail(); // función definida en blog.js
+    });
   </script>
 </body>
 </html>

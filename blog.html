@@ -35,23 +35,91 @@
                         <a class="nav-link" href="contacto.html">Contacto</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="blog.html">Blog</a>
+                        <a class="nav-link active" href="blog.html">Blog</a>
                     </li>
                     
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-outline-primary" href="login.html">
-                            <i class="fas fa-user me-2"></i>Ingresar
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
                         </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-  <!-- Blog List -->
-  <section class="py-5 mt-5">
+  <!-- Hero Section -->
+  <section class="hero-section">
     <div class="container">
-      <h1 class="section-title mb-4 text-center">Blog HuertoHogar</h1>
+      <div class="row align-items-center">
+        <div class="col-lg-8 mx-auto text-center hero-content">
+          <h1 class="hero-title">Blog HuertoHogar</h1>
+          <p class="hero-subtitle">Descubre consejos, técnicas y todo lo que necesitas saber sobre agricultura urbana, alimentación saludable y vida sustentable.</p>
+          <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="#articulos" class="btn btn-primary">
+              <i class="fas fa-book-open me-2"></i>Ver Artículos
+            </a>
+            <a href="huertohogar-web.html" class="btn btn-outline-primary">
+              <i class="fas fa-home me-2"></i>Volver al Inicio
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog List -->
+  <section id="articulos" class="py-5">
+    <div class="container">
+      <h2 class="section-title text-center mb-5">Últimos Artículos</h2>
       <div class="row" id="blog-list"></div>
+    </div>
+  </section>
+
+  <!-- Blog Stats Section -->
+  <section class="py-5" style="background: var(--light-bg);">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-seedling"></i>
+            </div>
+            <h4>Consejos Prácticos</h4>
+            <p class="text-muted">Aprende técnicas probadas para cultivar tus propios alimentos de forma natural y sostenible.</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-heart"></i>
+            </div>
+            <h4>Vida Saludable</h4>
+            <p class="text-muted">Descubre cómo una alimentación consciente puede mejorar tu bienestar y el de tu familia.</p>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-leaf"></i>
+            </div>
+            <h4>Sostenibilidad</h4>
+            <p class="text-muted">Conoce prácticas amigables con el medio ambiente que puedes implementar en tu día a día.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -62,10 +130,18 @@
     </div>
   </footer>
 
+  <!-- Message Container for Alerts -->
+  <div id="messageContainer"></div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+  <script src="huertohogar-web.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/demo-data.js"></script>
   <script src="blog.js"></script>
   <script>
-    renderBlogList(); // función definida en blog.js
+    document.addEventListener('DOMContentLoaded', function() {
+      renderBlogList(); // función definida en blog.js
+    });
   </script>
 </body>
 </html>

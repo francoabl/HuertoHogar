@@ -74,29 +74,40 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#inicio">Inicio</a>
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#productos" id="productosDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">
                             Productos
                         </a>
-                        <ul class="dropdown-menu" aria-labelledby="productosDropdown">
-                            <li><a class="dropdown-item" href="frutas.html">Frutas Frescas</a></li>
-                            <li><a class="dropdown-item" href="verduras.html">Verduras Orgánicas</a></li>
-                            <li><a class="dropdown-item" href="organicos.html">Productos Orgánicos</a></li>
-                            <li><a class="dropdown-item" href="lacteos.html">Productos Lácteos</a></li>
-                        </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#nosotros">Nosotros</a>
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="huertohogar-web.html#contacto">Contacto</a>
+                        <a class="nav-link" href="contacto.html">Contacto</a>
                     </li>
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-outline-primary" href="registro.html">
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog.html">Blog</a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
                             <i class="fas fa-user-plus me-2"></i>Registro
                         </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -155,22 +166,6 @@
                                 </a>
                             </div>
 
-                            <div class="divider">
-                                <span>Continuar con</span>
-                            </div>
-
-                            <div class="row g-2">
-                                <div class="col-6">
-                                    <button class="btn btn-outline-secondary w-100">
-                                        <i class="fab fa-google me-2"></i>Google
-                                    </button>
-                                </div>
-                                <div class="col-6">
-                                    <button class="btn btn-outline-secondary w-100">
-                                        <i class="fab fa-facebook-f me-2"></i>Facebook
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,24 +205,73 @@
         </div>
     </footer>
 
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="huertohogar-web.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/demo-data.js"></script>
     <script>
+        // Verificar si ya está logueado
+        document.addEventListener('DOMContentLoaded', function() {
+            if (auth.isLoggedIn()) {
+                AuthUI.showMessage('Ya tienes una sesión activa', 'info');
+                setTimeout(() => {
+                    window.location.href = 'huertohogar-web.html';
+                }, 2000);
+                return;
+            }
+        });
+
         // Manejo del formulario de login
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
             
-            // Aquí puedes agregar la lógica de autenticación
-            // Por ahora mostraremos un mensaje de ejemplo
-            if (email && password) {
-                alert('Funcionalidad de login pendiente de implementar con backend/Supabase');
-                // Redireccionar a página principal o dashboard
-                // window.location.href = 'huertohogar-web.html';
+            // Validaciones básicas
+            if (!email || !password) {
+                AuthUI.showMessage('Por favor, completa todos los campos', 'danger');
+                return;
+            }
+            
+            // Deshabilitar botón de submit para evitar doble click
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Iniciando sesión...';
+            
+            // Intentar login
+            const result = auth.login(email, password, remember);
+            
+            if (result.success) {
+                AuthUI.showMessage(result.message, 'success');
+                AuthUI.showMessage(`¡Bienvenido ${result.user.firstName}!`, 'success');
+                
+                // Redireccionar después de un breve delay
+                setTimeout(() => {
+                    window.location.href = 'huertohogar-web.html';
+                }, 1500);
+            } else {
+                AuthUI.showMessage(result.message, 'danger');
+                
+                // Rehabilitar botón
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
             }
         });
+
+        // Efecto visual para campos con error
+        function highlightError(fieldId) {
+            const field = document.getElementById(fieldId);
+            field.classList.add('is-invalid');
+            setTimeout(() => {
+                field.classList.remove('is-invalid');
+            }, 3000);
+        }
     </script>
 </body>
 </html>

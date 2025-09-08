@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - HuertoHogar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="huertohogar-web.css">
+    <style>
+        .profile-container {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+            padding: 100px 0 50px;
+        }
+        .profile-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(45, 80, 22, 0.15);
+            border: 1px solid rgba(45, 80, 22, 0.05);
+            overflow: hidden;
+        }
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary-green), var(--light-green));
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2.5rem;
+        }
+        .profile-body {
+            padding: 2rem;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid rgba(45, 80, 22, 0.1);
+            padding: 12px 15px;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 0.2rem rgba(123, 179, 66, 0.25);
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            border-bottom: 2px solid transparent;
+            background: none;
+            color: #6c757d;
+            transition: all 0.3s ease;
+        }
+        .nav-tabs .nav-link.active {
+            border-bottom-color: var(--accent-green);
+            color: var(--primary-green);
+            background: none;
+        }
+        .tab-content {
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="huertohogar-web.html">Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="productos.html">Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contacto.html">Contacto</a>
+                    </li>
+                    <li class="nav-item ms-3">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-container">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="profile-card">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h2 id="profileName">Mi Perfil</h2>
+                            <p class="mb-0" id="profileEmail">usuario@ejemplo.com</p>
+                            <small class="opacity-75" id="memberSince">Miembro desde</small>
+                        </div>
+                        <div class="profile-body">
+                            <!-- Tabs Navigation -->
+                            <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">
+                                        <i class="fas fa-user me-2"></i>Información Personal
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="security-tab" data-bs-toggle="tab" data-bs-target="#security" type="button" role="tab">
+                                        <i class="fas fa-lock me-2"></i>Seguridad
+                                    </button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
+                                        <i class="fas fa-shopping-bag me-2"></i>Mis Pedidos
+                                    </button>
+                                </li>
+                            </ul>
+
+                            <!-- Tabs Content -->
+                            <div class="tab-content" id="profileTabContent">
+                                <!-- Información Personal -->
+                                <div class="tab-pane fade show active" id="info" role="tabpanel">
+                                    <form id="profileForm">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="firstName" class="form-label">
+                                                        <i class="fas fa-user me-2"></i>Nombre
+                                                    </label>
+                                                    <input type="text" class="form-control" id="firstName" name="firstName" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="lastName" class="form-label">
+                                                        <i class="fas fa-user me-2"></i>Apellido
+                                                    </label>
+                                                    <input type="text" class="form-control" id="lastName" name="lastName" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="email" class="form-label">
+                                                <i class="fas fa-envelope me-2"></i>Correo Electrónico
+                                            </label>
+                                            <input type="email" class="form-control" id="email" name="email" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="phone" class="form-label">
+                                                <i class="fas fa-phone me-2"></i>Teléfono
+                                            </label>
+                                            <input type="tel" class="form-control" id="phone" name="phone">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="address" class="form-label">
+                                                <i class="fas fa-map-marker-alt me-2"></i>Dirección
+                                            </label>
+                                            <input type="text" class="form-control" id="address" name="address">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="city" class="form-label">
+                                                        <i class="fas fa-city me-2"></i>Ciudad
+                                                    </label>
+                                                    <select class="form-control" id="city" name="city">
+                                                        <option value="">Selecciona tu ciudad</option>
+                                                        <option value="santiago">Santiago</option>
+                                                        <option value="valparaiso">Valparaíso</option>
+                                                        <option value="vina-del-mar">Viña del Mar</option>
+                                                        <option value="concepcion">Concepción</option>
+                                                        <option value="temuco">Temuco</option>
+                                                        <option value="la-serena">La Serena</option>
+                                                        <option value="antofagasta">Antofagasta</option>
+                                                        <option value="iquique">Iquique</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="zipCode" class="form-label">
+                                                        <i class="fas fa-mail-bulk me-2"></i>Código Postal
+                                                    </label>
+                                                    <input type="text" class="form-control" id="zipCode" name="zipCode">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Guardar Cambios
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Seguridad -->
+                                <div class="tab-pane fade" id="security" role="tabpanel">
+                                    <form id="passwordForm">
+                                        <div class="mb-3">
+                                            <label for="currentPassword" class="form-label">
+                                                <i class="fas fa-lock me-2"></i>Contraseña Actual
+                                            </label>
+                                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="newPassword" class="form-label">
+                                                <i class="fas fa-key me-2"></i>Nueva Contraseña
+                                            </label>
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                            <div class="form-text">Mínimo 8 caracteres</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="confirmNewPassword" class="form-label">
+                                                <i class="fas fa-key me-2"></i>Confirmar Nueva Contraseña
+                                            </label>
+                                            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save me-2"></i>Cambiar Contraseña
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Mis Pedidos -->
+                                <div class="tab-pane fade" id="orders" role="tabpanel">
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-shopping-bag text-muted" style="font-size: 3rem;"></i>
+                                        <h4 class="mt-3 text-muted">Sin pedidos aún</h4>
+                                        <p class="text-muted">Cuando realices tu primer pedido, aparecerá aquí.</p>
+                                        <a href="productos.html" class="btn btn-primary">
+                                            <i class="fas fa-shopping-basket me-2"></i>Ver Productos
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Container for Alerts -->
+    <div id="messageContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="huertohogar-web.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Verificar autenticación al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!AuthUI.requireAuth()) {
+                return;
+            }
+
+            loadUserProfile();
+            
+            // Verificar si hay un hash en la URL para activar un tab específico
+            const hash = window.location.hash;
+            if (hash === '#orders') {
+                const ordersTab = document.getElementById('orders-tab');
+                if (ordersTab) {
+                    const tab = new bootstrap.Tab(ordersTab);
+                    tab.show();
+                }
+            }
+        });
+
+        // Cargar información del perfil
+        function loadUserProfile() {
+            const user = auth.getCurrentUser();
+            if (!user) return;
+
+            // Actualizar header del perfil
+            document.getElementById('profileName').textContent = `${user.firstName} ${user.lastName}`;
+            document.getElementById('profileEmail').textContent = user.email;
+            
+            if (user.createdAt) {
+                const createdDate = new Date(user.createdAt).toLocaleDateString('es-CL');
+                document.getElementById('memberSince').textContent = `Miembro desde ${createdDate}`;
+            }
+
+            // Llenar formulario con datos del usuario
+            document.getElementById('firstName').value = user.firstName || '';
+            document.getElementById('lastName').value = user.lastName || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('phone').value = user.phone || '';
+            document.getElementById('address').value = user.address || '';
+            document.getElementById('city').value = user.city || '';
+            document.getElementById('zipCode').value = user.zipCode || '';
+        }
+
+        // Actualizar información del perfil
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const userData = Object.fromEntries(formData);
+            
+            // Deshabilitar botón de submit
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Guardando...';
+            
+            // Actualizar perfil
+            const result = auth.updateProfile(userData);
+            
+            if (result.success) {
+                AuthUI.showMessage(result.message, 'success');
+                loadUserProfile(); // Recargar datos
+            } else {
+                AuthUI.showMessage(result.message, 'danger');
+            }
+            
+            // Rehabilitar botón
+            setTimeout(() => {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }, 1000);
+        });
+
+        // Cambiar contraseña
+        document.getElementById('passwordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+            
+            // Validar que las contraseñas coincidan
+            if (newPassword !== confirmNewPassword) {
+                AuthUI.showMessage('Las contraseñas nuevas no coinciden', 'danger');
+                return;
+            }
+            
+            // Deshabilitar botón de submit
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Cambiando...';
+            
+            // Cambiar contraseña
+            const result = auth.changePassword(currentPassword, newPassword);
+            
+            if (result.success) {
+                AuthUI.showMessage(result.message, 'success');
+                this.reset(); // Limpiar formulario
+            } else {
+                AuthUI.showMessage(result.message, 'danger');
+            }
+            
+            // Rehabilitar botón
+            setTimeout(() => {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }, 1000);
+        });
+
+        // Actualizar AuthUI para incluir link a perfil
+        AuthUI.showProfile = function() {
+            window.location.href = 'perfil.html';
+        };
+    </script>
+</body>
+</html>
