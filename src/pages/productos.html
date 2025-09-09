@@ -7,6 +7,64 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/huertohogar-web.css">
+    <style>
+        .search-filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(45, 80, 22, 0.1);
+            margin-bottom: 30px;
+        }
+        
+        .search-box .form-control {
+            border-radius: 25px 0 0 25px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 20px;
+        }
+        
+        .search-box .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.2rem rgba(124, 179, 66, 0.25);
+        }
+        
+        .search-box .btn {
+            border-radius: 0;
+            border: 2px solid #e0e0e0;
+            border-left: none;
+            padding: 12px 15px;
+        }
+        
+        .search-box .btn:last-child {
+            border-radius: 0 25px 25px 0;
+        }
+        
+        .search-box .btn:hover {
+            background-color: var(--primary-green);
+            border-color: var(--primary-green);
+            color: white;
+        }
+        
+        .price-filter .form-control {
+            border-radius: 25px;
+            border: 2px solid #e0e0e0;
+            padding: 12px 15px;
+        }
+        
+        .price-filter .form-control:focus {
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 0.2rem rgba(124, 179, 66, 0.25);
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .search-filter-section .row > div {
+                margin-bottom: 15px;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navigation -->
@@ -68,6 +126,37 @@
             <div class="products-header">
                 <h1 class="products-title" id="pageTitle">Nuestros Productos</h1>
                 <p class="lead text-muted" id="pageSubtitle">Descubre la frescura del campo chileno</p>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="search-filter-section mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="search-box">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="searchInput" placeholder="Buscar productos...">
+                                <button class="btn btn-outline-secondary" type="button" id="searchBtn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" type="button" id="clearSearchBtn" style="display: none;">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="price-filter">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" id="precioMin" placeholder="Precio mín." min="0">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" id="precioMax" placeholder="Precio máx." min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Category Filters -->
@@ -168,59 +257,58 @@
         let productos = [];
         let categoriaActual = 'todas';
 
-        // Datos de productos embebidos como fallback
-        const productosEmbebidos = {
-            "productos": [
-                {
-                    "id": 1,
-                    "nombre": "Manzanas Rojas",
-                    "precio": 1200,
-                    "categoria": "frutas frescas",
-                    "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
-                    "imagen": "../../public/assets/img/productos/manzanas.jpg"
-                },
-                {
-                    "id": 2,
-                    "nombre": "Miel Orgánica",
-                    "precio": 2500,
-                    "categoria": "organicos",
-                    "descripcion": "Miel pura y natural de abejas locales, sin procesamientos químicos",
-                    "imagen": "../../public/assets/img/productos/miel.webp"
-                },
-                {
-                    "id": 3,
-                    "nombre": "Leche Fresca",
-                    "precio": 1800,
-                    "categoria": "lacteos",
-                    "descripcion": "Leche fresca de vacas locales, rica en nutrientes",
-                    "imagen": "../../public/assets/img/productos/leche.webp"
-                },
-                {
-                    "id": 4,
-                    "nombre": "Naranjas Dulces",
-                    "precio": 1100,
-                    "categoria": "frutas frescas",
-                    "descripcion": "Naranjas jugosas y dulces, perfectas para jugos naturales",
-                    "imagen": "../../public/assets/img/productos/naranjas.webp"
-                },
-                {
-                    "id": 5,
-                    "nombre": "Espinacas Orgánicas",
-                    "precio": 900,
-                    "categoria": "verduras",
-                    "descripcion": "Espinacas frescas cultivadas sin pesticidas, ricas en hierro",
-                    "imagen": "../../public/assets/img/productos/espinacas.webp"
-                },
-                {
-                    "id": 6,
-                    "nombre": "Zanahorias Frescas",
-                    "precio": 800,
-                    "categoria": "verduras",
-                    "descripcion": "Zanahorias frescas y crujientes, perfectas para ensaladas",
-                    "imagen": "../../public/assets/img/productos/zanahorias.webp"
-                }
-            ]
-        };
+        // Datos embebidos como fallback
+        const productosEmbebidos = [
+            {
+                "id": 1,
+                "nombre": "Manzanas Rojas",
+                "precio": 1200,
+                "categoria": "frutas frescas",
+                "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
+                "imagen": "../../public/assets/img/productos/manzanas.webp"
+            },
+            {
+                "id": 2,
+                "nombre": "Miel Orgánica",
+                "precio": 2500,
+                "categoria": "organicos",
+                "descripcion": "Miel pura y natural de abejas locales, sin procesamientos químicos",
+                "imagen": "../../public/assets/img/productos/miel.webp"
+            },
+            {
+                "id": 3,
+                "nombre": "Leche Fresca",
+                "precio": 1800,
+                "categoria": "lacteos",
+                "descripcion": "Leche fresca de vacas locales, rica en nutrientes",
+                "imagen": "../../public/assets/img/productos/leche.webp"
+            },
+            {
+                "id": 4,
+                "nombre": "Naranjas Dulces",
+                "precio": 1100,
+                "categoria": "frutas frescas",
+                "descripcion": "Naranjas jugosas y dulces, perfectas para jugos naturales",
+                "imagen": "../../public/assets/img/productos/naranjas.webp"
+            },
+            {
+                "id": 5,
+                "nombre": "Espinacas Orgánicas",
+                "precio": 900,
+                "categoria": "verduras",
+                "descripcion": "Espinacas frescas cultivadas sin pesticidas, ricas en hierro",
+                "imagen": "../../public/assets/img/productos/espinacas.webp"
+            },
+            {
+                "id": 6,
+                "nombre": "Zanahorias Frescas",
+                "precio": 800,
+                "categoria": "verduras",
+                "descripcion": "Zanahorias frescas y crujientes, perfectas para ensaladas",
+                "imagen": "../../public/assets/img/productos/zanahorias.webp"
+            }
+        ];
+
 
         // Mapeo de categorías para los títulos
         const categoriesTitles = {
@@ -239,26 +327,40 @@
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
-        // Función para cargar productos desde JSON
+        // Función para cargar productos desde la API
         async function cargarProductos() {
             try {
-                console.log('Iniciando carga de productos...');
+                console.log('Iniciando carga de productos desde API...');
                 
-                // Intentar cargar desde archivo JSON primero
+                // Intentar cargar desde la API primero
                 try {
-                    const response = await fetch('productos.json');
+                    const response = await fetch('http://localhost:3000/api/products?activo=true');
                     
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     
                     const data = await response.json();
-                    console.log('Datos cargados desde JSON:', data);
-                    productos = data.productos;
+                    console.log('Datos cargados desde API:', data);
+                    
+                    if (data.success && data.data && data.data.products) {
+                        // Transformar datos de la API al formato esperado por el frontend
+                        productos = data.data.products.map(producto => ({
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            categoria: producto.categoria_nombre || 'general',
+                            descripcion: producto.descripcion,
+                            imagen: producto.imagen ? `http://localhost:3000${producto.imagen}` : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'
+                        }));
+                        console.log('Productos transformados:', productos);
+                    } else {
+                        throw new Error('Formato de respuesta inválido');
+                    }
                 } catch (fetchError) {
-                    console.log('Error al cargar desde JSON, usando datos embebidos:', fetchError);
+                    console.log('Error al cargar desde API, usando datos embebidos:', fetchError);
                     // Usar datos embebidos como fallback
-                    productos = productosEmbebidos.productos;
+                    productos = productosEmbebidos;
                     console.log('Usando datos embebidos:', productos);
                 }
                 
@@ -394,35 +496,205 @@
             `;
         }
 
+        // Variables globales adicionales para filtros
+        let busquedaActual = '';
+        let precioMinActual = '';
+        let precioMaxActual = '';
+
+        // Función para aplicar todos los filtros
+        function aplicarFiltros() {
+            const filtros = {
+                search: busquedaActual,
+                categoria: categoriaActual !== 'todas' ? categoriaActual : '',
+                precio_min: precioMinActual,
+                precio_max: precioMaxActual
+            };
+            
+            mostrarLoading();
+            cargarProductosConFiltros(filtros);
+        }
+
+        // Función mejorada para cargar productos con filtros
+        async function cargarProductosConFiltros(filtros = {}) {
+            try {
+                console.log('Cargando productos con filtros:', filtros);
+                
+                // Construir parámetros de consulta
+                const params = new URLSearchParams();
+                
+                if (filtros.search && filtros.search.trim()) {
+                    params.append('search', filtros.search.trim());
+                }
+                
+                if (filtros.categoria && filtros.categoria !== 'todas') {
+                    // Mapear categorías del frontend a los IDs de la API
+                    const categoriaMapping = {
+                        'frutas frescas': 1,
+                        'verduras': 2,
+                        'lacteos': 3,
+                        'organicos': 4
+                    };
+                    const categoriaId = categoriaMapping[filtros.categoria.toLowerCase()];
+                    if (categoriaId) {
+                        params.append('categoria', categoriaId);
+                    }
+                }
+                
+                if (filtros.precio_min && filtros.precio_min > 0) {
+                    params.append('precio_min', filtros.precio_min);
+                }
+                
+                if (filtros.precio_max && filtros.precio_max > 0) {
+                    params.append('precio_max', filtros.precio_max);
+                }
+                
+                params.append('activo', 'true');
+                params.append('limit', '50');
+                
+                const url = `http://localhost:3000/api/products?${params}`;
+                console.log('URL de consulta:', url);
+                
+                try {
+                    const response = await fetch(url);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.success && data.data && data.data.products) {
+                        productos = data.data.products.map(producto => ({
+                            id: producto.id,
+                            nombre: producto.nombre,
+                            precio: producto.precio,
+                            categoria: producto.categoria_nombre || 'general',
+                            descripcion: producto.descripcion,
+                            imagen: producto.imagen || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'
+                        }));
+                    } else {
+                        throw new Error('Formato de respuesta inválido');
+                    }
+                } catch (fetchError) {
+                    console.log('Error al cargar desde API, aplicando filtros a datos embebidos:', fetchError);
+                    productos = productosEmbebidos;
+                    
+                    // Aplicar filtros manualmente
+                    if (filtros.search) {
+                        productos = productos.filter(p => 
+                            p.nombre.toLowerCase().includes(filtros.search.toLowerCase()) ||
+                            p.descripcion.toLowerCase().includes(filtros.search.toLowerCase())
+                        );
+                    }
+                    
+                    if (filtros.categoria && filtros.categoria !== 'todas') {
+                        productos = productos.filter(p => 
+                            p.categoria.toLowerCase() === filtros.categoria.toLowerCase()
+                        );
+                    }
+                    
+                    if (filtros.precio_min) {
+                        productos = productos.filter(p => p.precio >= parseFloat(filtros.precio_min));
+                    }
+                    
+                    if (filtros.precio_max) {
+                        productos = productos.filter(p => p.precio <= parseFloat(filtros.precio_max));
+                    }
+                }
+                
+                mostrarProductos('todas'); // Mostrar todos los productos filtrados
+                ocultarLoading();
+            } catch (error) {
+                console.error('Error al cargar productos con filtros:', error);
+                mostrarError();
+            }
+        }
+
+        // Función para mostrar loading
+        function mostrarLoading() {
+            document.getElementById('loadingState').style.display = 'block';
+            document.getElementById('productsContainer').style.display = 'none';
+            document.getElementById('noProductsMessage').style.display = 'none';
+        }
+
         // Event listeners para filtros
         document.addEventListener('DOMContentLoaded', function() {
             // Cargar productos al cargar la página
             cargarProductos();
 
-            // Event listeners para botones de filtro
+            // Event listeners para búsqueda
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            const precioMinInput = document.getElementById('precioMin');
+            const precioMaxInput = document.getElementById('precioMax');
+
+            // Búsqueda en tiempo real con debounce
+            let searchTimeout;
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    busquedaActual = this.value;
+                    
+                    if (busquedaActual.trim()) {
+                        clearSearchBtn.style.display = 'block';
+                    } else {
+                        clearSearchBtn.style.display = 'none';
+                    }
+                    
+                    aplicarFiltros();
+                }, 500);
+            });
+
+            // Botón de búsqueda
+            searchBtn.addEventListener('click', function() {
+                busquedaActual = searchInput.value;
+                aplicarFiltros();
+            });
+
+            // Botón limpiar búsqueda
+            clearSearchBtn.addEventListener('click', function() {
+                searchInput.value = '';
+                busquedaActual = '';
+                this.style.display = 'none';
+                aplicarFiltros();
+            });
+
+            // Filtros de precio
+            let priceTimeout;
+            function onPriceChange() {
+                clearTimeout(priceTimeout);
+                priceTimeout = setTimeout(() => {
+                    precioMinActual = precioMinInput.value;
+                    precioMaxActual = precioMaxInput.value;
+                    aplicarFiltros();
+                }, 1000);
+            }
+
+            precioMinInput.addEventListener('input', onPriceChange);
+            precioMaxInput.addEventListener('input', onPriceChange);
+
+            // Event listeners para botones de categoría (actualizado)
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const categoria = this.getAttribute('data-categoria');
                     categoriaActual = categoria;
-                    // Actualizar filtro activo
+                    
                     actualizarFiltroActivo(categoria);
-                    // Mostrar productos filtrados
-                    mostrarProductos(categoria);
-                    // Actualizar URL sin recargar la página
+                    aplicarFiltros();
+                    
                     const newUrl = categoria === 'todas' ? 'productos.html' : `productos.html?categoria=${encodeURIComponent(categoria)}`;
                     window.history.pushState({categoria: categoria}, '', newUrl);
                 });
             });
 
-            // Delegación de evento para productos
+            // Delegación de evento para productos (sin cambios)
             document.getElementById('productsContainer').addEventListener('click', function(e) {
-                // Si el clic es en un botón de carrito o sus hijos, no hacer nada
                 if (e.target.closest('.btn-add-to-cart')) {
                     return;
                 }
                 
                 let card = e.target;
-                // Buscar el elemento con la clase producto-clickable
                 while (card && !card.classList.contains('producto-clickable')) {
                     card = card.parentElement;
                 }
@@ -437,7 +709,7 @@
             if (event.state && event.state.categoria) {
                 categoriaActual = event.state.categoria;
                 actualizarFiltroActivo(categoriaActual);
-                mostrarProductos(categoriaActual);
+                aplicarFiltros();
             }
         });
     </script>

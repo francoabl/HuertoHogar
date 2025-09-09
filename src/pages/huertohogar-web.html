@@ -86,7 +86,7 @@
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
-                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDUwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjI1MCIgY3k9IjIwMCIgcj0iMTUwIiBmaWxsPSIjN2NiMzQyIiBvcGFjaXR5PSIwLjEiLz4KPHN2ZyB4PSIxNzUiIHk9IjEyNSIgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzJkNTAxNiI+CjxwYXRoIGQ9Im0yMiAyMS0xLTEuNzNhMy45IDMuOSAwIDAgMC0zLTEuNTQgMi43OSAyLjc5IDAgMCAwLTEuNjEuNTNsLS42MS0uMzVhOC44IDguOCAwIDAgMC00LjI2LTEuMTUgNyA3IDAgMCAwLTUuMTkgMi4zMkE3LjYgNy42IDAgMCAwIDQgMTIuNVY5YzAtMy4zIDIuNy02IDYtNnM2IDIuNyA2IDZ2MmE0IDQgMCAwIDEgNCA0djQuNjFMMjIgMjF6bS00LTguNzNhMiAyIDAgMCAxLTIgMlY5YTQgNCAwIDAgMC04IDB2My41YTUuNSA1LjUgMCAwIDEgNS41IDUuNXYyYTkgOSAwIDAgMSA0LjUtMTJ6Ii8+Cjwvc3ZnPgo8L3N2Zz4K" alt="HuertoHogar" class="img-fluid" style="max-width: 400px;">
+                    <img src="../../public/assets/img/campo.webp" alt="Campo verde" class="img-fluid rounded-circle" style="width: 400px; height: 400px; object-fit: cover;">
                 </div>
             </div>
         </div>
@@ -172,8 +172,8 @@
     <!-- About Section -->
     <section id="nosotros" class="py-5 bg-light">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
+            <div class="row align-items-stretch">
+                <div class="col-lg-6 d-flex flex-column">
                     <h2 class="section-title text-start">Nuestras Ubicaciones</h2>
                     <p class="mb-4 text-muted">Estamos presentes en las principales ciudades de Chile, acercando la frescura del campo a tu hogar.</p>
                     
@@ -208,12 +208,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="map-container">
+                <div class="col-lg-6 d-flex">
+                    <div class="map-container w-100">
                         <iframe 
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13086576.889830012!2d-75.23762259999999!3d-35.675147!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c5410425af2f%3A0x8475d53c400f0931!2sChile!5e0!3m2!1sen!2scl!4v1635789012345!5m2!1sen!2scl" 
-                            width="100%" 
-                            height="400" 
                             style="border:0;" 
                             allowfullscreen="" 
                             loading="lazy">
@@ -278,6 +276,41 @@
     <div id="messageContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Admin Access Script -->
+    <script>
+        // Secuencia secreta para acceder al panel de administración
+        let adminSequence = '';
+        const secretCode = 'admin123';
+        
+        document.addEventListener('keydown', function(e) {
+            adminSequence += e.key.toLowerCase();
+            
+            // Mantener solo los últimos caracteres necesarios
+            if (adminSequence.length > secretCode.length) {
+                adminSequence = adminSequence.slice(-secretCode.length);
+            }
+            
+            // Verificar si se ingresó la secuencia correcta
+            if (adminSequence === secretCode) {
+                // Mostrar confirmación
+                if (confirm('🔐 Acceso de Administrador detectado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+                adminSequence = ''; // Reset
+            }
+        });
+        
+        // También detectar Ctrl+Alt+A como atajo alternativo
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                if (confirm('🔐 Atajo de Administrador activado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+            }
+        });
+    </script>
     <script src="../js/components/huertohogar-web.js"></script>
     <script src="../js/auth/auth.js"></script>
     <script src="../js/auth/demo-data.js"></script>

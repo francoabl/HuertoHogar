@@ -261,9 +261,45 @@
     <div id="messageContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="huertohogar-web.js"></script>
-    <script src="js/auth.js"></script>
+    <script src="../js/components/huertohogar-web.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/auth/demo-data.js"></script>
     <script src="../js/cart/cart.js"></script>
+    
+    <!-- Admin Access Script -->
+    <script>
+        // Secuencia secreta para acceder al panel de administración
+        let adminSequence = '';
+        const secretCode = 'admin123';
+        
+        document.addEventListener('keydown', function(e) {
+            adminSequence += e.key.toLowerCase();
+            
+            // Mantener solo los últimos caracteres necesarios
+            if (adminSequence.length > secretCode.length) {
+                adminSequence = adminSequence.slice(-secretCode.length);
+            }
+            
+            // Verificar si se ingresó la secuencia correcta
+            if (adminSequence === secretCode) {
+                // Mostrar confirmación
+                if (confirm('🔐 Acceso de Administrador detectado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+                adminSequence = ''; // Reset
+            }
+        });
+        
+        // También detectar Ctrl+Alt+A como atajo alternativo
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                if (confirm('🔐 Atajo de Administrador activado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+            }
+        });
+    </script>
     <script>
         // Verificar autenticación al cargar la página
         document.addEventListener('DOMContentLoaded', function() {

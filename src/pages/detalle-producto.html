@@ -487,7 +487,7 @@
                 "precio": 1200,
                 "categoria": "frutas frescas",
                 "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
-                "imagen": "../../public/assets/img/productos/manzanas.jpg"
+                "imagen": "../../public/assets/img/productos/manzanas.webp"
             },
             {
                 "id": 2,
@@ -547,15 +547,46 @@
                 document.getElementById('detalleProducto').innerHTML = '<p>No se especificó producto.</p>';
                 return;
             }
-            let productos = [];
+            
+            let producto = null;
+            
             try {
-                const res = await fetch('productos.json');
-                const data = await res.json();
-                productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
-            } catch (e) {
-                productos = productosEmbebidos;
+                // Intentar cargar desde la API primero
+                const response = await fetch(`http://localhost:3000/api/products/${id}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data && data.data.product) {
+                        // Transformar datos de la API al formato esperado
+                        const productFromAPI = data.data.product;
+                        producto = {
+                            id: productFromAPI.id,
+                            nombre: productFromAPI.nombre,
+                            precio: productFromAPI.precio,
+                            categoria: productFromAPI.categoria_nombre || 'general',
+                            descripcion: productFromAPI.descripcion || 'Producto fresco de calidad premium',
+                            imagen: productFromAPI.imagen ? `http://localhost:3000${productFromAPI.imagen}` : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'
+                        };
+                        console.log('Producto cargado desde API:', producto);
+                    }
+                } else {
+                    throw new Error(`API error: ${response.status}`);
+                }
+            } catch (apiError) {
+                console.log('Error al cargar desde API, intentando con JSON:', apiError);
+                
+                // Fallback: intentar cargar desde JSON
+                try {
+                    const res = await fetch('productos.json');
+                    const data = await res.json();
+                    const productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
+                    producto = productos.find(p => String(p.id) === id);
+                } catch (jsonError) {
+                    console.log('Error al cargar desde JSON, usando datos embebidos:', jsonError);
+                    producto = productosEmbebidos.find(p => String(p.id) === id);
+                }
             }
-            const producto = productos.find(p => String(p.id) === id);
+            
             if (!producto) {
                 document.getElementById('detalleProducto').innerHTML = `
                     <div class="text-center p-5">
@@ -569,6 +600,9 @@
                 `;
                 return;
             }
+            
+            // Actualizar título de la página
+            document.title = `${producto.nombre} - HuertoHogar`;
             
             // Actualizar breadcrumb
             document.getElementById('breadcrumbProducto').textContent = producto.nombre;
