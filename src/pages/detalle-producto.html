@@ -330,6 +330,7 @@
     </style>
 </head>
 <body>
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="huertohogar-web.html">
@@ -358,10 +359,23 @@
                         <a class="nav-link" href="blog.html">Blog</a>
                     </li>
                     
-                    <li class="nav-item ms-3">
-                        <a class="btn btn-outline-primary" href="login.html">
-                            <i class="fas fa-user me-2"></i>Ingresar
+                    <!-- Elementos para usuarios no logueados -->
+                    <li class="nav-item ms-3 logged-out-only">
+                        <a class="btn btn-outline-primary me-2" href="registro.html">
+                            <i class="fas fa-user-plus me-2"></i>Registro
                         </a>
+                    </li>
+                    <li class="nav-item logged-out-only">
+                        <a class="btn btn-primary" href="login.html">
+                            <i class="fas fa-sign-in-alt me-2"></i>Ingresar
+                        </a>
+                    </li>
+                    
+                    <!-- Elementos para usuarios logueados -->
+                    <li class="nav-item ms-3 logged-in-only" style="display: none;">
+                        <div id="userInfo">
+                            <!-- Se llenará dinámicamente con JavaScript -->
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -457,6 +471,7 @@
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/cart/cart.js"></script>
     <script>
         // Obtiene el id del producto desde la URL: detalle-producto.html?id=123
         function getProductId() {
@@ -472,7 +487,7 @@
                 "precio": 1200,
                 "categoria": "frutas frescas",
                 "descripcion": "Manzanas rojas frescas y crujientes, directo del huerto",
-                "imagen": "../../public/assets/img/productos/manzanas.jpg"
+                "imagen": "../../public/assets/img/productos/manzanas.webp"
             },
             {
                 "id": 2,
@@ -526,36 +541,52 @@
             return displayNames[categoria?.toLowerCase()] || categoria;
         }
 
-        function mostrarMensajeAgregado() {
-            const btn = document.getElementById('btnAgregarCarro');
-            const originalContent = btn.innerHTML;
-            
-            btn.innerHTML = '<i class="fas fa-check icon-check"></i>¡Agregado al carro!';
-            btn.disabled = true;
-            btn.style.background = 'linear-gradient(135deg, #4caf50, #66bb6a)';
-            
-            setTimeout(() => {
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-                btn.style.background = '';
-            }, 2000);
-        }
-
         async function cargarDetalleProducto() {
             const id = getProductId();
             if (!id) {
                 document.getElementById('detalleProducto').innerHTML = '<p>No se especificó producto.</p>';
                 return;
             }
-            let productos = [];
+            
+            let producto = null;
+            
             try {
-                const res = await fetch('productos.json');
-                const data = await res.json();
-                productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
-            } catch (e) {
-                productos = productosEmbebidos;
+                // Intentar cargar desde la API primero
+                const response = await fetch(`http://localhost:3000/api/products/${id}`);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.data && data.data.product) {
+                        // Transformar datos de la API al formato esperado
+                        const productFromAPI = data.data.product;
+                        producto = {
+                            id: productFromAPI.id,
+                            nombre: productFromAPI.nombre,
+                            precio: productFromAPI.precio,
+                            categoria: productFromAPI.categoria_nombre || 'general',
+                            descripcion: productFromAPI.descripcion || 'Producto fresco de calidad premium',
+                            imagen: productFromAPI.imagen ? `http://localhost:3000${productFromAPI.imagen}` : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDMwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjZjhmZGY0Ii8+CjxjaXJjbGUgY3g9IjE1MCIgY3k9IjEyNSIgcj0iNDAiIGZpbGw9IiM3Y2IzNDIiIG9wYWNpdHk9IjAuMyIvPgo8dGV4dCB4PSIxNTAiIHk9IjEzNSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNmM3NTdkIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZGlzcG9uaWJsZTwvdGV4dD4KPC9zdmc+'
+                        };
+                        console.log('Producto cargado desde API:', producto);
+                    }
+                } else {
+                    throw new Error(`API error: ${response.status}`);
+                }
+            } catch (apiError) {
+                console.log('Error al cargar desde API, intentando con JSON:', apiError);
+                
+                // Fallback: intentar cargar desde JSON
+                try {
+                    const res = await fetch('productos.json');
+                    const data = await res.json();
+                    const productos = Array.isArray(data.productos) ? data.productos : productosEmbebidos;
+                    producto = productos.find(p => String(p.id) === id);
+                } catch (jsonError) {
+                    console.log('Error al cargar desde JSON, usando datos embebidos:', jsonError);
+                    producto = productosEmbebidos.find(p => String(p.id) === id);
+                }
             }
-            const producto = productos.find(p => String(p.id) === id);
+            
             if (!producto) {
                 document.getElementById('detalleProducto').innerHTML = `
                     <div class="text-center p-5">
@@ -570,6 +601,9 @@
                 return;
             }
             
+            // Actualizar título de la página
+            document.title = `${producto.nombre} - HuertoHogar`;
+            
             // Actualizar breadcrumb
             document.getElementById('breadcrumbProducto').textContent = producto.nombre;
             document.getElementById('detalleProducto').innerHTML = `
@@ -583,7 +617,12 @@
                     </div>
                     <div class="precio">$${producto.precio.toLocaleString('es-CL')}</div>
                     <div class="descripcion">${producto.descripcion}</div>
-                    <button id="btnAgregarCarro" class="btn-agregar">
+                    <button id="btnAgregarCarro" class="btn-agregar btn-add-to-cart"
+                            data-id="${producto.id}"
+                            data-nombre="${producto.nombre}"
+                            data-precio="${producto.precio}"
+                            data-imagen="${producto.imagen}"
+                            data-categoria="${producto.categoria}">
                         <i class="fas fa-shopping-cart me-2"></i>Agregar al carro
                     </button>
                     <a href="productos.html" class="btn-volver">
@@ -591,7 +630,7 @@
                     </a>
                 </div>
             `;
-            document.getElementById('btnAgregarCarro').addEventListener('click', mostrarMensajeAgregado);
+            // El event listener será manejado automáticamente por el CartManager
 
             // Mostrar productos recomendados de la misma categoría
             mostrarRecomendados(productos, producto);

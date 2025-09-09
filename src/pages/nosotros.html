@@ -29,7 +29,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="nosotros.html">Nosotros</a>
+                        <a class="nav-link" href="nosotros.html">Nosotros</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="contacto.html">Contacto</a>
@@ -60,6 +60,7 @@
             </div>
         </div>
     </nav>
+
 
     <!-- Hero Section -->
     <section class="hero-section">
@@ -254,65 +255,96 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-5">
+    <footer id="contacto" class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <h5 class="mb-3">
+                <div class="col-lg-4">
+                    <h3 class="footer-title">
                         <i class="fas fa-seedling me-2"></i>HuertoHogar
-                    </h5>
-                    <p>Del campo a tu mesa, productos frescos y naturales para toda la familia.</p>
-                    <div class="social-links">
-                        <a href="#" class="text-light me-3"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-light me-3"><i class="fab fa-twitter"></i></a>
+                    </h3>
+                    <p class="mb-4">Conectando familias chilenas con la frescura del campo desde hace más de 6 años.</p>
+                    <div class="d-flex">
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-icon">
+                            <i class="fab fa-twitter"></i>
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-6 mb-4">
-                    <h6 class="mb-3">Enlaces</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="huertohogar-web.html" class="text-light">Inicio</a></li>
-                        <li><a href="productos.html" class="text-light">Productos</a></li>
-                        <li><a href="nosotros.html" class="text-light">Nosotros</a></li>
-                        <li><a href="blog.html" class="text-light">Blog</a></li>
-                    </ul>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="footer-title">Navegación</h4>
+                    <a href="#inicio" class="footer-link">Inicio</a>
+                    <a href="#productos" class="footer-link">Productos</a>
+                    <a href="#nosotros" class="footer-link">Nosotros</a>
+                    <a href="#contacto" class="footer-link">Contacto</a>
                 </div>
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <h6 class="mb-3">Contacto</h6>
-                    <p><i class="fas fa-envelope me-2"></i>info@huertohogar.com</p>
-                    <p><i class="fas fa-phone me-2"></i>+595 21 123 456</p>
-                    <p><i class="fas fa-map-marker-alt me-2"></i>Asunción, Paraguay</p>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="footer-title">Productos</h4>
+                    <a href="productos.html?categoria=frutas frescas" class="footer-link">Frutas</a>
+                    <a href="productos.html?categoria=verduras" class="footer-link">Verduras</a>
+                    <a href="productos.html?categoria=organicos" class="footer-link">Orgánicos</a>
+                    <a href="productos.html?categoria=lacteos" class="footer-link">Lácteos</a>
                 </div>
-                <div class="col-lg-3 mb-4">
-                    <h6 class="mb-3">Newsletter</h6>
-                    <p>Recibe ofertas especiales y noticias sobre productos frescos.</p>
-                    <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Tu email">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fas fa-paper-plane"></i>
-                        </button>
-                    </div>
+                <div class="col-lg-4">
+                    <h4 class="footer-title">Contacto</h4>
+                    <p><i class="fas fa-envelope me-2"></i>contacto@huertohogar.cl</p>
+                    <p><i class="fas fa-phone me-2"></i>+56 2 2345 6789</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>Santiago, Chile</p>
                 </div>
             </div>
-            <hr class="my-4">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <p class="mb-0">&copy; 2024 HuertoHogar. Todos los derechos reservados.</p>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <small>Desarrollado por Agustín Aceval, Aaron Gorigoitia y Franco Alarcón</small>
-                </div>
+            <hr style="border-color: rgba(255,255,255,0.2); margin: 2rem 0 1rem;">
+            <div class="text-center">
+                <p>&copy; 2024 HuertoHogar. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
-
     <!-- Bootstrap JS -->
     <!-- Message Container for Alerts -->
     <div id="messageContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="huertohogar-web.js"></script>
-    <script src="js/auth.js"></script>
-    <script src="js/demo-data.js"></script>
+    <script src="../js/components/huertohogar-web.js"></script>
+    <script src="../js/auth/auth.js"></script>
+    <script src="../js/auth/demo-data.js"></script>
+    <script src="../js/cart/cart.js"></script>
+    
+    <!-- Admin Access Script -->
+    <script>
+        // Secuencia secreta para acceder al panel de administración
+        let adminSequence = '';
+        const secretCode = 'admin123';
+        
+        document.addEventListener('keydown', function(e) {
+            adminSequence += e.key.toLowerCase();
+            
+            // Mantener solo los últimos caracteres necesarios
+            if (adminSequence.length > secretCode.length) {
+                adminSequence = adminSequence.slice(-secretCode.length);
+            }
+            
+            // Verificar si se ingresó la secuencia correcta
+            if (adminSequence === secretCode) {
+                // Mostrar confirmación
+                if (confirm('🔐 Acceso de Administrador detectado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+                adminSequence = ''; // Reset
+            }
+        });
+        
+        // También detectar Ctrl+Alt+A como atajo alternativo
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'a') {
+                e.preventDefault();
+                if (confirm('🔐 Atajo de Administrador activado.\n¿Deseas acceder al panel de administración?')) {
+                    window.location.href = 'admin-access.html';
+                }
+            }
+        });
+    </script>
 </body>
 </html>
