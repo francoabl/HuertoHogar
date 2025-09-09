@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pruebas API HuertoHogar</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #4CAF50;
+        }
+        .endpoint {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+        .method {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            color: white;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .get { background-color: #4CAF50; }
+        .post { background-color: #2196F3; }
+        .put { background-color: #FF9800; }
+        .delete { background-color: #f44336; }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            background: #1e1e1e;
+            color: #f0f0f0;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            margin-top: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ef5350;
+        }
+        .success {
+            background-color: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        input, select {
+            padding: 5px;
+            margin: 2px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        .form-group {
+            margin: 10px 0;
+        }
+        label {
+            display: inline-block;
+            width: 120px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌱 Pruebas API HuertoHogar</h1>
+        <p>Esta página te permite probar todos los endpoints de la API directamente desde el navegador.</p>
+        
+        <div class="form-group">
+            <label>URL Base:</label>
+            <input type="text" id="baseUrl" value="http://localhost:3000" style="width: 300px;">
+        </div>
+        
+        <div class="form-group">
+            <label>Token JWT:</label>
+            <input type="text" id="authToken" placeholder="Bearer token (opcional)" style="width: 400px;">
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🔐 Autenticación</h2>
+        
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <strong>/api/auth/register</strong> - Registrar usuario
+            <div class="form-group">
+                <input type="text" id="regNombre" placeholder="Nombre" required>
+                <input type="text" id="regApellido" placeholder="Apellido" required>
+                <input type="email" id="regEmail" placeholder="Email" required>
+                <input type="password" id="regPassword" placeholder="Contraseña" required>
+                <input type="tel" id="regTelefono" placeholder="Teléfono (opcional)">
+            </div>
+            <button onclick="registrarUsuario()">Registrar Usuario</button>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <strong>/api/auth/login</strong> - Iniciar sesión
+            <div class="form-group">
+                <input type="email" id="loginEmail" placeholder="Email" value="admin@huertohogar.com">
+                <input type="password" id="loginPassword" placeholder="Contraseña" value="admin123">
+            </div>
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>🛍️ Productos</h2>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <strong>/api/products</strong> - Obtener productos
+            <div class="form-group">
+                <input type="number" id="page" placeholder="Página" value="1" min="1">
+                <input type="number" id="limit" placeholder="Límite" value="10" min="1" max="100">
+                <input type="text" id="search" placeholder="Buscar">
+                <input type="number" id="categoria" placeholder="ID Categoría" min="1">
+                <input type="number" id="precioMin" placeholder="Precio Min" min="0">
+                <input type="number" id="precioMax" placeholder="Precio Max" min="0">
+            </div>
+            <button onclick="obtenerProductos()">Obtener Productos</button>
+            <button onclick="obtenerProducto()">Obtener Producto por ID</button>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <strong>/api/products</strong> - Crear producto (Admin)
+            <div class="form-group">
+                <input type="text" id="prodNombre" placeholder="Nombre" required>
+                <input type="text" id="prodDescripcion" placeholder="Descripción">
+                <input type="number" id="prodPrecio" placeholder="Precio" step="0.01" min="0" required>
+                <input type="number" id="prodCategoria" placeholder="ID Categoría" min="1" required>
+                <input type="text" id="prodImagen" placeholder="URL Imagen">
+                <input type="number" id="prodStock" placeholder="Stock" min="0">
+            </div>
+            <button onclick="crearProducto()">Crear Producto</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📂 Categorías</h2>
+        
+        <div class="endpoint">
+            <span class="method get">GET</span>
+            <strong>/api/categories</strong> - Obtener categorías
+            <button onclick="obtenerCategorias()">Obtener Categorías</button>
+        </div>
+
+        <div class="endpoint">
+            <span class="method post">POST</span>
+            <strong>/api/categories</strong> - Crear categoría (Admin)
+            <div class="form-group">
+                <input type="text" id="catNombre" placeholder="Nombre" required>
+                <input type="text" id="catDescripcion" placeholder="Descripción">
+            </div>
+            <button onclick="crearCategoria()">Crear Categoría</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>📊 Respuesta</h2>
+        <div id="response" class="response">
+            Ejecuta una consulta para ver la respuesta aquí...
+        </div>
+    </div>
+
+    <script>
+        // Función para mostrar respuesta
+        function mostrarRespuesta(data, isError = false) {
+            const responseDiv = document.getElementById('response');
+            responseDiv.className = 'response ' + (isError ? 'error' : 'success');
+            responseDiv.innerHTML = JSON.stringify(data, null, 2);
+        }
+
+        // Función para hacer peticiones
+        async function hacerPeticion(url, options = {}) {
+            try {
+                const baseUrl = document.getElementById('baseUrl').value;
+                const token = document.getElementById('authToken').value;
+                
+                const headers = {
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                };
+                
+                if (token && token.trim()) {
+                    headers.Authorization = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+                }
+                
+                const response = await fetch(baseUrl + url, {
+                    ...options,
+                    headers
+                });
+                
+                const data = await response.json();
+                mostrarRespuesta(data, !response.ok);
+                
+                // Si es login exitoso, guardar el token
+                if (response.ok && data.data && data.data.token) {
+                    document.getElementById('authToken').value = data.data.token;
+                }
+                
+                return data;
+            } catch (error) {
+                mostrarRespuesta({ error: error.message }, true);
+            }
+        }
+
+        // Autenticación
+        function registrarUsuario() {
+            const data = {
+                nombre: document.getElementById('regNombre').value,
+                apellido: document.getElementById('regApellido').value,
+                email: document.getElementById('regEmail').value,
+                password: document.getElementById('regPassword').value,
+                telefono: document.getElementById('regTelefono').value
+            };
+            hacerPeticion('/api/auth/register', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        }
+
+        function iniciarSesion() {
+            const data = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+            hacerPeticion('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        }
+
+        // Productos
+        function obtenerProductos() {
+            const params = new URLSearchParams();
+            const page = document.getElementById('page').value;
+            const limit = document.getElementById('limit').value;
+            const search = document.getElementById('search').value;
+            const categoria = document.getElementById('categoria').value;
+            const precioMin = document.getElementById('precioMin').value;
+            const precioMax = document.getElementById('precioMax').value;
+            
+            if (page) params.append('page', page);
+            if (limit) params.append('limit', limit);
+            if (search) params.append('search', search);
+            if (categoria) params.append('categoria', categoria);
+            if (precioMin) params.append('precio_min', precioMin);
+            if (precioMax) params.append('precio_max', precioMax);
+            
+            hacerPeticion(`/api/products?${params}`);
+        }
+
+        function obtenerProducto() {
+            const id = prompt('Ingresa el ID del producto:');
+            if (id) {
+                hacerPeticion(`/api/products/${id}`);
+            }
+        }
+
+        function crearProducto() {
+            const data = {
+                nombre: document.getElementById('prodNombre').value,
+                descripcion: document.getElementById('prodDescripcion').value,
+                precio: parseFloat(document.getElementById('prodPrecio').value),
+                categoria_id: parseInt(document.getElementById('prodCategoria').value),
+                imagen: document.getElementById('prodImagen').value,
+                stock: parseInt(document.getElementById('prodStock').value) || 0
+            };
+            hacerPeticion('/api/products', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        }
+
+        // Categorías
+        function obtenerCategorias() {
+            hacerPeticion('/api/categories');
+        }
+
+        function crearCategoria() {
+            const data = {
+                nombre: document.getElementById('catNombre').value,
+                descripcion: document.getElementById('catDescripcion').value
+            };
+            hacerPeticion('/api/categories', {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        }
+
+        // Test inicial
+        window.onload = function() {
+            // Probar conexión al cargar la página
+            hacerPeticion('/health');
+        };
+    </script>
+</body>
+</html>

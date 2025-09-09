@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -1029,3 +1030,1036 @@
     <script src="../js/admin.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - HuertoHogar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/huertohogar-web.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="huertohogar-web.html">
+                <i class="fas fa-seedling me-2"></i>HuertoHogar
+                <span class="admin-badge">Admin</span>
+            </a>
+            <div class="d-flex align-items-center">
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                        <div class="admin-avatar me-2">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="admin-info">
+                            <small class="text-muted">Administrador</small>
+                            <div>Administrador</div>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="perfil.html"><i class="fas fa-user me-2"></i>Mi Perfil</a></li>
+                        <li><a class="dropdown-item" href="huertohogar-web.html"><i class="fas fa-home me-2"></i>Ver Sitio Web</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="login.html"><i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h5><i class="fas fa-tachometer-alt me-2"></i>Panel de Control</h5>
+            </div>
+            <nav class="sidebar-nav">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard" data-section="dashboard">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#productos" data-section="productos">
+                            <i class="fas fa-shopping-basket"></i>
+                            <span>Productos</span>
+                            <span class="badge bg-primary ms-auto">24</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pedidos" data-section="pedidos">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Pedidos</span>
+                            <span class="badge bg-warning ms-auto">5</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#usuarios" data-section="usuarios">
+                            <i class="fas fa-users"></i>
+                            <span>Usuarios</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#categorias" data-section="categorias">
+                            <i class="fas fa-tags"></i>
+                            <span>Categorías</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#inventario" data-section="inventario">
+                            <i class="fas fa-warehouse"></i>
+                            <span>Inventario</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reportes" data-section="reportes">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reportes</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#configuracion" data-section="configuracion">
+                            <i class="fas fa-cog"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="admin-section active">
+                <div class="admin-header">
+                    <h1><i class="fas fa-chart-line me-3"></i>Dashboard</h1>
+                    <p class="text-muted">Vista general del estado de HuertoHogar</p>
+                </div>
+
+
+
+                <!-- Charts Row -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-8">
+                        <div class="admin-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-chart-line me-2"></i>Ventas de los Últimos 7 Días</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="salesChart" height="100"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="admin-card">
+                            <div class="card-header">
+                                <h5><i class="fas fa-chart-pie me-2"></i>Productos Más Vendidos</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="product-list">
+                                    <div class="product-item">
+                                        <img src="../../public/assets/img/productos/manzanas.webp" alt="Manzanas" class="product-thumb">
+                                        <div class="product-info">
+                                            <div class="product-name">Manzanas Rojas</div>
+                                            <div class="product-sales">156 vendidas</div>
+                                        </div>
+                                        <div class="product-badge">
+                                            <span class="badge bg-success">🥇</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-item">
+                                        <img src="../../public/assets/img/productos/zanahorias.webp" alt="Zanahorias" class="product-thumb">
+                                        <div class="product-info">
+                                            <div class="product-name">Zanahorias Orgánicas</div>
+                                            <div class="product-sales">134 vendidas</div>
+                                        </div>
+                                        <div class="product-badge">
+                                            <span class="badge bg-secondary">🥈</span>
+                                        </div>
+                                    </div>
+                                    <div class="product-item">
+                                        <img src="../../public/assets/img/productos/espinacas.webp" alt="Espinacas" class="product-thumb">
+                                        <div class="product-info">
+                                            <div class="product-name">Espinacas Frescas</div>
+                                            <div class="product-sales">98 vendidas</div>
+                                        </div>
+                                        <div class="product-badge">
+                                            <span class="badge bg-warning">🥉</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Orders -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-clock me-2"></i>Pedidos Recientes</h5>
+                        <a href="#" class="btn btn-sm btn-outline-primary">Ver Todos</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Cliente</th>
+                                        <th>Productos</th>
+                                        <th>Total</th>
+                                        <th>Estado</th>
+                                        <th>Fecha</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#1847</td>
+                                        <td>María González</td>
+                                        <td>Manzanas, Zanahorias</td>
+                                        <td>$12.500</td>
+                                        <td><span class="badge bg-warning">Pendiente</span></td>
+                                        <td>Hace 5 min</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#1846</td>
+                                        <td>Carlos Ruiz</td>
+                                        <td>Espinacas, Leche</td>
+                                        <td>$8.750</td>
+                                        <td><span class="badge bg-success">Completado</span></td>
+                                        <td>Hace 12 min</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-info"><i class="fas fa-print"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#1845</td>
+                                        <td>Ana Morales</td>
+                                        <td>Naranjas, Miel</td>
+                                        <td>$15.200</td>
+                                        <td><span class="badge bg-info">En Preparación</span></td>
+                                        <td>Hace 25 min</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></button>
+                                            <button class="btn btn-sm btn-outline-success"><i class="fas fa-check"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productos Section -->
+            <div id="productos-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-shopping-basket me-3"></i>Gestión de Productos</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus me-2"></i>Agregar Producto
+                    </button>
+                </div>
+
+                <!-- Filters -->
+                <div class="admin-card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Buscar</label>
+                                <input type="text" class="form-control" placeholder="Nombre del producto...">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Categoría</label>
+                                <select class="form-select">
+                                    <option>Todas las categorías</option>
+                                    <option>Frutas Frescas</option>
+                                    <option>Verduras</option>
+                                    <option>Productos Orgánicos</option>
+                                    <option>Lácteos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select">
+                                    <option>Todos los estados</option>
+                                    <option>Activo</option>
+                                    <option>Inactivo</option>
+                                    <option>Agotado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-outline-primary d-block">
+                                    <i class="fas fa-search me-2"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="admin-card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>Imagen</th>
+                                        <th>Nombre</th>
+                                        <th>Categoría</th>
+                                        <th>Precio</th>
+                                        <th>Stock</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <img src="../../public/assets/img/productos/manzanas.webp" alt="Manzanas" class="product-thumb">
+                                        </td>
+                                        <td>Manzanas Rojas</td>
+                                        <td>Frutas Frescas</td>
+                                        <td>$2.500/kg</td>
+                                        <td>150 kg</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <img src="../../public/assets/img/productos/zanahorias.webp" alt="Zanahorias" class="product-thumb">
+                                        </td>
+                                        <td>Zanahorias Orgánicas</td>
+                                        <td>Verduras</td>
+                                        <td>$1.800/kg</td>
+                                        <td>75 kg</td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <img src="../../public/assets/img/productos/espinacas.webp" alt="Espinacas" class="product-thumb">
+                                        </td>
+                                        <td>Espinacas Frescas</td>
+                                        <td>Verduras</td>
+                                        <td>$3.200/kg</td>
+                                        <td>5 kg</td>
+                                        <td><span class="badge bg-warning">Poco Stock</span></td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-edit"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Paginación de productos">
+                            <ul class="pagination justify-content-center mt-4">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Anterior">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Siguiente">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections (placeholder for now) -->
+            <div id="pedidos-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-shopping-cart me-3"></i>Gestión de Pedidos</h1>
+                </div>
+                <div class="admin-card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h5>Sección en desarrollo</h5>
+                        <p class="text-muted">La gestión de pedidos estará disponible próximamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="usuarios-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-users me-3"></i>Gestión de Usuarios</h1>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                        <i class="fas fa-user-plus me-2"></i>Agregar Usuario
+                    </button>
+                </div>
+
+                <!-- User Stats Cards -->
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-primary">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">1,234</div>
+                                <div class="stat-label">Total Usuarios</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> +15%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-success">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">1,156</div>
+                                <div class="stat-label">Usuarios Activos</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> +8%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-warning">
+                                <i class="fas fa-user-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">45</div>
+                                <div class="stat-label">Nuevos Hoy</div>
+                                <div class="stat-change positive">
+                                    <i class="fas fa-arrow-up"></i> +25%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="stat-card">
+                            <div class="stat-icon bg-danger">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div class="stat-content">
+                                <div class="stat-number">78</div>
+                                <div class="stat-label">Inactivos</div>
+                                <div class="stat-change negative">
+                                    <i class="fas fa-arrow-down"></i> -3%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="admin-card mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Buscar Usuario</label>
+                                <input type="text" class="form-control" placeholder="Nombre, email o teléfono...">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Estado</label>
+                                <select class="form-select">
+                                    <option>Todos</option>
+                                    <option>Activo</option>
+                                    <option>Inactivo</option>
+                                    <option>Suspendido</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Tipo</label>
+                                <select class="form-select">
+                                    <option>Todos</option>
+                                    <option>Cliente</option>
+                                    <option>Administrador</option>
+                                    <option>Vendedor</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Fecha de Registro</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">&nbsp;</label>
+                                <button class="btn btn-outline-primary d-block w-100">
+                                    <i class="fas fa-search me-2"></i>Filtrar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h5><i class="fas fa-list me-2"></i>Lista de Usuarios</h5>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download me-1"></i>Exportar
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-filter me-1"></i>Filtros Avanzados
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <input type="checkbox" class="form-check-input">
+                                        </th>
+                                        <th>Avatar</th>
+                                        <th>Usuario</th>
+                                        <th>Email</th>
+                                        <th>Teléfono</th>
+                                        <th>Tipo</th>
+                                        <th>Estado</th>
+                                        <th>Registro</th>
+                                        <th>Última Actividad</th>
+                                        <th>Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <div class="user-avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>María González</strong>
+                                                <br><small class="text-muted">ID: #1001</small>
+                                            </div>
+                                        </td>
+                                        <td>maria.gonzalez@email.com</td>
+                                        <td>+56 9 1234 5678</td>
+                                        <td><span class="badge bg-info">Cliente</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>15/08/2024</td>
+                                        <td>Hace 2 horas</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary" title="Ver Perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Suspender">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <div class="user-avatar bg-warning">
+                                                <i class="fas fa-user-tie"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>Carlos Ruiz</strong>
+                                                <br><small class="text-muted">ID: #1002</small>
+                                            </div>
+                                        </td>
+                                        <td>carlos.ruiz@huertohogar.cl</td>
+                                        <td>+56 9 8765 4321</td>
+                                        <td><span class="badge bg-danger">Admin</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>10/06/2024</td>
+                                        <td>Hace 15 min</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary" title="Ver Perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary" title="Logs">
+                                                    <i class="fas fa-history"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <div class="user-avatar bg-info">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>Ana Morales</strong>
+                                                <br><small class="text-muted">ID: #1003</small>
+                                            </div>
+                                        </td>
+                                        <td>ana.morales@gmail.com</td>
+                                        <td>+56 9 5555 6666</td>
+                                        <td><span class="badge bg-info">Cliente</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>22/08/2024</td>
+                                        <td>Hace 1 día</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary" title="Ver Perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Suspender">
+                                                    <i class="fas fa-ban"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <div class="user-avatar bg-success">
+                                                <i class="fas fa-user-tag"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>Pedro Silva</strong>
+                                                <br><small class="text-muted">ID: #1004</small>
+                                            </div>
+                                        </td>
+                                        <td>pedro.silva@outlook.com</td>
+                                        <td>+56 9 7777 8888</td>
+                                        <td><span class="badge bg-warning">Vendedor</span></td>
+                                        <td><span class="badge bg-success">Activo</span></td>
+                                        <td>05/07/2024</td>
+                                        <td>Hace 3 horas</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary" title="Ver Perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-warning" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-info" title="Comisiones">
+                                                    <i class="fas fa-dollar-sign"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input"></td>
+                                        <td>
+                                            <div class="user-avatar bg-secondary">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <strong>Lucía Fernández</strong>
+                                                <br><small class="text-muted">ID: #1005</small>
+                                            </div>
+                                        </td>
+                                        <td>lucia.fernandez@yahoo.com</td>
+                                        <td>+56 9 3333 4444</td>
+                                        <td><span class="badge bg-info">Cliente</span></td>
+                                        <td><span class="badge bg-secondary">Inactivo</span></td>
+                                        <td>12/09/2024</td>
+                                        <td>Hace 1 semana</td>
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <button class="btn btn-sm btn-outline-primary" title="Ver Perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-success" title="Activar">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger" title="Eliminar">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Paginación de usuarios" class="mt-4">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" aria-label="Anterior">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#" aria-label="Siguiente">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        
+                        <!-- Bulk Actions -->
+                        <div class="bulk-actions mt-3 d-none">
+                            <div class="alert alert-info d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fas fa-info-circle me-2"></i>
+                                    <span id="selectedCount">0</span> usuarios seleccionados
+                                </div>
+                                <div class="btn-group">
+                                    <button class="btn btn-sm btn-outline-success">
+                                        <i class="fas fa-check me-1"></i>Activar Todos
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-warning">
+                                        <i class="fas fa-ban me-1"></i>Suspender Todos
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-envelope me-1"></i>Enviar Email
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger">
+                                        <i class="fas fa-trash me-1"></i>Eliminar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="categorias-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-tags me-3"></i>Gestión de Categorías</h1>
+                </div>
+                <div class="admin-card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                        <h5>Sección en desarrollo</h5>
+                        <p class="text-muted">La gestión de categorías estará disponible próximamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="inventario-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-warehouse me-3"></i>Control de Inventario</h1>
+                </div>
+                <div class="admin-card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-warehouse fa-3x text-muted mb-3"></i>
+                        <h5>Sección en desarrollo</h5>
+                        <p class="text-muted">El control de inventario estará disponible próximamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reportes-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-chart-bar me-3"></i>Reportes y Estadísticas</h1>
+                </div>
+                <div class="admin-card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                        <h5>Sección en desarrollo</h5>
+                        <p class="text-muted">Los reportes y estadísticas estarán disponibles próximamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="configuracion-section" class="admin-section">
+                <div class="admin-header">
+                    <h1><i class="fas fa-cog me-3"></i>Configuración del Sistema</h1>
+                </div>
+                <div class="admin-card">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-cog fa-3x text-muted mb-3"></i>
+                        <h5>Sección en desarrollo</h5>
+                        <p class="text-muted">La configuración del sistema estará disponible próximamente.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-plus me-2"></i>Agregar Nuevo Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre del Producto</label>
+                                <input type="text" class="form-control" placeholder="Ej: Manzanas Rojas">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Categoría</label>
+                                <select class="form-select">
+                                    <option>Seleccionar categoría</option>
+                                    <option>Frutas Frescas</option>
+                                    <option>Verduras</option>
+                                    <option>Productos Orgánicos</option>
+                                    <option>Lácteos</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Precio</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">$</span>
+                                    <input type="number" class="form-control" placeholder="0.00">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Stock</label>
+                                <input type="number" class="form-control" placeholder="0">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Unidad</label>
+                                <select class="form-select">
+                                    <option>kg</option>
+                                    <option>unidad</option>
+                                    <option>litro</option>
+                                    <option>gramos</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Descripción</label>
+                                <textarea class="form-control" rows="3" placeholder="Descripción del producto..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Imagen del Producto</label>
+                                <input type="file" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary">Guardar Producto</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-user-plus me-2"></i>Agregar Nuevo Usuario</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="row g-3">
+                            <!-- Información Personal -->
+                            <div class="col-12">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-user me-2"></i>Información Personal
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nombre Completo</label>
+                                <input type="text" class="form-control" name="fullName" placeholder="Ej: María González" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">RUT</label>
+                                <input type="text" class="form-control" name="rut" placeholder="12.345.678-9">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" placeholder="usuario@email.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Teléfono</label>
+                                <input type="tel" class="form-control" name="phone" placeholder="+56 9 1234 5678">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Fecha de Nacimiento</label>
+                                <input type="date" class="form-control" name="birthDate">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Género</label>
+                                <select class="form-select" name="gender">
+                                    <option value="">Seleccionar</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="F">Femenino</option>
+                                    <option value="O">Otro</option>
+                                    <option value="N">Prefiero no decir</option>
+                                </select>
+                            </div>
+                            
+                            <!-- Información de Cuenta -->
+                            <div class="col-12 mt-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-lock me-2"></i>Información de Cuenta
+                                </h6>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tipo de Usuario</label>
+                                <select class="form-select" name="userType" required>
+                                    <option value="">Seleccionar tipo</option>
+                                    <option value="cliente">Cliente</option>
+                                    <option value="vendedor">Vendedor</option>
+                                    <option value="admin">Administrador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Estado Inicial</label>
+                                <select class="form-select" name="status">
+                                    <option value="activo" selected>Activo</option>
+                                    <option value="inactivo">Inactivo</option>
+                                    <option value="pendiente">Pendiente de Verificación</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Contraseña Temporal</label>
+                                <input type="password" class="form-control" name="password" placeholder="Mínimo 8 caracteres" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Confirmar Contraseña</label>
+                                <input type="password" class="form-control" name="confirmPassword" placeholder="Repetir contraseña" required>
+                            </div>
+                            
+                            <!-- Dirección -->
+                            <div class="col-12 mt-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-map-marker-alt me-2"></i>Dirección (Opcional)
+                                </h6>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label">Dirección</label>
+                                <input type="text" class="form-control" name="address" placeholder="Ej: Av. Libertador 1234">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label">Ciudad</label>
+                                <input type="text" class="form-control" name="city" placeholder="Ej: Santiago">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Región</label>
+                                <select class="form-select" name="region">
+                                    <option value="">Seleccionar región</option>
+                                    <option value="RM">Región Metropolitana</option>
+                                    <option value="V">Valparaíso</option>
+                                    <option value="VIII">Biobío</option>
+                                    <option value="IV">Coquimbo</option>
+                                    <option value="IX">La Araucanía</option>
+                                    <option value="X">Los Lagos</option>
+                                    <option value="VI">O'Higgins</option>
+                                    <option value="VII">Maule</option>
+                                    <option value="III">Atacama</option>
+                                    <option value="II">Antofagasta</option>
+                                    <option value="I">Tarapacá</option>
+                                    <option value="XI">Aysén</option>
+                                    <option value="XII">Magallanes</option>
+                                    <option value="XIV">Los Ríos</option>
+                                    <option value="XV">Arica y Parinacota</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Código Postal</label>
+                                <input type="text" class="form-control" name="zipCode" placeholder="7500000">
+                            </div>
+                            
+                            <!-- Opciones Adicionales -->
+                            <div class="col-12 mt-4">
+                                <h6 class="text-primary mb-3">
+                                    <i class="fas fa-cog me-2"></i>Opciones Adicionales
+                                </h6>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="sendWelcomeEmail" id="sendWelcomeEmail" checked>
+                                    <label class="form-check-label" for="sendWelcomeEmail">
+                                        Enviar email de bienvenida
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="emailNotifications" id="emailNotifications" checked>
+                                    <label class="form-check-label" for="emailNotifications">
+                                        Activar notificaciones por email
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="requirePasswordChange" id="requirePasswordChange">
+                                    <label class="form-check-label" for="requirePasswordChange">
+                                        Requerir cambio de contraseña en primer login
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- Notas -->
+                            <div class="col-12">
+                                <label class="form-label">Notas Internas</label>
+                                <textarea class="form-control" name="notes" rows="3" placeholder="Notas adicionales sobre el usuario..."></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveUser()">
+                        <i class="fas fa-save me-2"></i>Crear Usuario
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>
+

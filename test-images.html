@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -55,3 +56,62 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de Imágenes</title>
+</head>
+<body>
+    <h1>Test de Imágenes - HuertoHogar</h1>
+    
+    <h2>Probando API</h2>
+    <div id="api-results"></div>
+    
+    <h2>Probando Rutas Directas</h2>
+    <div>
+        <h3>Desde servidor (localhost:3000)</h3>
+        <img src="http://localhost:3000/public/assets/img/productos/manzanas.webp" width="100" alt="Manzanas desde servidor">
+        <img src="http://localhost:3000/public/assets/img/productos/miel.webp" width="100" alt="Miel desde servidor">
+        
+        <h3>Desde archivos locales (rutas relativas)</h3>
+        <img src="./public/assets/img/productos/manzanas.webp" width="100" alt="Manzanas local">
+        <img src="./public/assets/img/productos/miel.webp" width="100" alt="Miel local">
+    </div>
+
+    <script>
+        async function testAPI() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products?activo=true');
+                const data = await response.json();
+                
+                const resultsDiv = document.getElementById('api-results');
+                if (data.success && data.data && data.data.products) {
+                    resultsDiv.innerHTML = '<h3>Productos desde API:</h3>';
+                    data.data.products.forEach(producto => {
+                        resultsDiv.innerHTML += `
+                            <div style="border: 1px solid #ccc; margin: 10px; padding: 10px;">
+                                <h4>${producto.nombre}</h4>
+                                <p>Imagen URL: ${producto.imagen}</p>
+                                <img src="http://localhost:3000${producto.imagen}" width="100" alt="${producto.nombre}" 
+                                     onerror="this.style.border='2px solid red'; this.alt='ERROR: No se pudo cargar la imagen';">
+                            </div>
+                        `;
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p style="color: red;">Error en el formato de respuesta de la API</p>';
+                }
+            } catch (error) {
+                document.getElementById('api-results').innerHTML = 
+                    `<p style="color: red;">Error al conectar con la API: ${error.message}</p>`;
+            }
+        }
+        
+        // Ejecutar test cuando carga la página
+        window.onload = testAPI;
+    </script>
+</body>
+</html>
+
