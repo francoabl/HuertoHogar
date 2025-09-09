@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -127,3 +128,134 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acceso Administrativo - HuertoHogar</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/huertohogar-web.css">
+    <style>
+        .admin-access {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--light-bg), #e8f5e8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .admin-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            padding: 3rem;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .admin-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-green), var(--fresh-green));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            color: white;
+            font-size: 2rem;
+        }
+        
+        .admin-title {
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .admin-description {
+            color: var(--text-dark);
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+        
+        .admin-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(135deg, var(--accent-green), var(--fresh-green));
+            border: none;
+            padding: 12px 30px;
+            font-weight: 600;
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-admin:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 179, 66, 0.3);
+            color: white;
+        }
+        
+        .btn-secondary-admin {
+            background: transparent;
+            border: 2px solid var(--accent-green);
+            color: var(--accent-green);
+            padding: 10px 28px;
+        }
+        
+        .btn-secondary-admin:hover {
+            background: var(--accent-green);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-access">
+        <div class="admin-card">
+            <div class="admin-icon">
+                <i class="fas fa-user-shield"></i>
+            </div>
+            
+            <h1 class="admin-title">Panel de Administración</h1>
+            <p class="admin-description">
+                Accede al sistema de gestión de HuertoHogar para administrar productos, 
+                pedidos, usuarios y toda la información de tu tienda online.
+            </p>
+            
+            <div class="admin-buttons">
+                <a href="admin.html" class="btn-admin">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Acceder al Panel
+                </a>
+                <a href="huertohogar-web.html" class="btn-admin btn-secondary-admin">
+                    <i class="fas fa-arrow-left"></i>
+                    Volver al Sitio
+                </a>
+            </div>
+            
+            <div class="mt-4">
+                <small class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Este es un panel de administración simulado para demostración
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+

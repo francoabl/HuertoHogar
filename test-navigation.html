@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -161,3 +162,168 @@
     </script>
 </body>
 </html>
+=======
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Filtros y Navegación</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-link {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .test-link:hover {
+            background: #0056b3;
+            color: white;
+        }
+        img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin: 5px;
+            border: 1px solid #ddd;
+        }
+        #api-test {
+            margin: 20px 0;
+            padding: 15px;
+            background: #e9f7ef;
+            border-left: 4px solid #28a745;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test de Filtros y Navegación - HuertoHogar</h1>
+    
+    <div class="test-section">
+        <h2>📊 Estado del Servidor API</h2>
+        <div id="api-test">
+            <p id="api-status">Verificando conexión...</p>
+        </div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔗 Test de Enlaces de Navegación</h2>
+        <h3>Productos por Categoría:</h3>
+        <a href="src/pages/productos.html" class="test-link">📋 Todos los Productos</a>
+        <a href="src/pages/productos.html?categoria=frutas frescas" class="test-link">🍎 Frutas Frescas</a>
+        <a href="src/pages/productos.html?categoria=verduras" class="test-link">🥬 Verduras</a>
+        <a href="src/pages/productos.html?categoria=organicos" class="test-link">🌱 Orgánicos</a>
+        <a href="src/pages/productos.html?categoria=lacteos" class="test-link">🥛 Lácteos</a>
+        
+        <h3>Detalles de Productos:</h3>
+        <a href="src/pages/detalle-producto.html?id=1" class="test-link">🍎 Detalle Manzanas</a>
+        <a href="src/pages/detalle-producto.html?id=2" class="test-link">🍯 Detalle Miel</a>
+        <a href="src/pages/detalle-producto.html?id=3" class="test-link">🥛 Detalle Leche</a>
+    </div>
+
+    <div class="test-section">
+        <h2>🖼️ Test Directo de Imágenes</h2>
+        <h3>Desde servidor (localhost:3000):</h3>
+        <div id="server-images"></div>
+        
+        <h3>Desde archivos locales:</h3>
+        <div id="local-images"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📋 Test API de Productos</h2>
+        <div id="products-api-test"></div>
+    </div>
+
+    <script>
+        // Test de conexión API
+        async function testAPIConnection() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products?activo=true');
+                const data = await response.json();
+                
+                const statusEl = document.getElementById('api-status');
+                if (data.success && data.data && data.data.products) {
+                    statusEl.innerHTML = `
+                        ✅ <strong>Servidor API funcionando correctamente</strong><br>
+                        📊 Productos encontrados: ${data.data.products.length}<br>
+                        🔗 URL: http://localhost:3000/api/products<br>
+                        ⏰ Verificado: ${new Date().toLocaleTimeString()}
+                    `;
+                    
+                    // Test de imágenes desde servidor
+                    const serverImagesDiv = document.getElementById('server-images');
+                    data.data.products.slice(0, 3).forEach(producto => {
+                        const img = document.createElement('img');
+                        img.src = `http://localhost:3000${producto.imagen}`;
+                        img.alt = producto.nombre;
+                        img.title = `${producto.nombre} - ${producto.imagen}`;
+                        serverImagesDiv.appendChild(img);
+                    });
+                    
+                    // Test completo de productos
+                    const productsTestDiv = document.getElementById('products-api-test');
+                    productsTestDiv.innerHTML = '<h3>✅ Productos cargados desde API:</h3>';
+                    data.data.products.forEach(producto => {
+                        productsTestDiv.innerHTML += `
+                            <div style="border: 1px solid #ddd; margin: 10px; padding: 10px; border-radius: 5px;">
+                                <strong>${producto.nombre}</strong> - ${producto.categoria_nombre}<br>
+                                <small>Imagen: ${producto.imagen}</small><br>
+                                <img src="http://localhost:3000${producto.imagen}" width="80" alt="${producto.nombre}" 
+                                     style="margin-top: 5px;" 
+                                     onerror="this.style.border='2px solid red'; this.alt='❌ Error al cargar';">
+                            </div>
+                        `;
+                    });
+                    
+                } else {
+                    statusEl.innerHTML = '❌ <strong>Error:</strong> Formato de respuesta inválido';
+                }
+            } catch (error) {
+                document.getElementById('api-status').innerHTML = 
+                    `❌ <strong>Error de conexión:</strong> ${error.message}<br>
+                     🔧 Asegúrate de que el servidor esté ejecutándose en http://localhost:3000`;
+            }
+        }
+        
+        // Test de imágenes locales
+        function testLocalImages() {
+            const localImagesDiv = document.getElementById('local-images');
+            const images = [
+                'public/assets/img/productos/manzanas.webp',
+                'public/assets/img/productos/miel.webp', 
+                'public/assets/img/productos/leche.webp'
+            ];
+            
+            images.forEach(imagePath => {
+                const img = document.createElement('img');
+                img.src = imagePath;
+                img.alt = imagePath;
+                img.title = `Ruta local: ${imagePath}`;
+                localImagesDiv.appendChild(img);
+            });
+        }
+        
+        // Ejecutar tests
+        window.onload = function() {
+            testAPIConnection();
+            testLocalImages();
+        };
+    </script>
+</body>
+</html>
+
