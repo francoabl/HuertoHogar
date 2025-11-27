@@ -1,0 +1,237 @@
+/* About Page Styles */
+.about-page {
+  min-height: 100vh;
+}
+
+/* Hero Section */
+.about-hero {
+  background: linear-gradient(135deg, var(--light-bg) 0%, #ffffff 100%);
+  padding: 120px 0 80px;
+  margin-bottom: 0;
+}
+
+.about-hero-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  margin-bottom: 1.5rem;
+}
+
+.about-hero-subtitle {
+  font-size: 1.25rem;
+  color: #6c757d;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Feature Cards */
+.about-feature-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(45, 80, 22, 0.1);
+  border: 1px solid rgba(45, 80, 22, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.about-feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 50px rgba(45, 80, 22, 0.15);
+}
+
+/* Section Titles */
+.about-section-title {
+  color: var(--primary-green);
+  font-weight: 700;
+}
+
+/* Icons */
+.about-large-icon {
+  font-size: 8rem;
+  color: var(--accent-green);
+  opacity: 0.8;
+}
+
+.about-icon {
+  font-size: 3rem;
+}
+
+.about-value-icon {
+  font-size: 2.5rem;
+}
+
+/* Team Section */
+.about-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  color: white;
+}
+
+.about-social-icon {
+  color: var(--accent-green);
+  font-size: 1.25rem;
+  transition: color 0.3s ease;
+}
+
+.about-social-icon:hover {
+  color: var(--primary-green);
+}
+
+/* Mission & Vision Section */
+.about-mission-section {
+  background-color: var(--light-bg);
+}
+
+/* Values Section */
+.about-values-section {
+  background-color: var(--light-bg);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+  .about-hero {
+    padding: 80px 0 50px;
+  }
+
+  .about-hero-title {
+    font-size: 2.5rem;
+  }
+
+  .about-hero-subtitle {
+    font-size: 1.1rem;
+  }
+
+  .about-large-icon {
+    font-size: 6rem;
+  }
+
+  .about-icon {
+    font-size: 2.75rem;
+  }
+
+  .about-section-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    padding: 50px 0 30px;
+  }
+
+  .about-hero-title {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-hero-subtitle {
+    font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .about-large-icon {
+    font-size: 5rem;
+    margin-top: 1.5rem;
+  }
+
+  .about-section-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-feature-card {
+    margin-bottom: 1rem;
+    border-radius: 15px;
+  }
+
+  .about-feature-card .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .about-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .about-feature-card h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-feature-card p {
+    font-size: 0.9rem;
+  }
+
+  .about-value-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
+  }
+
+  .about-team-card h5 {
+    font-size: 1.1rem;
+  }
+
+  .about-team-card p {
+    font-size: 0.85rem;
+  }
+
+  .about-social-icon {
+    font-size: 1.1rem;
+  }
+
+  .about-mission-section,
+  .about-values-section {
+    padding: 3rem 0 !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-hero {
+    padding: 40px 0 25px;
+  }
+
+  .about-hero-title {
+    font-size: 1.5rem;
+  }
+
+  .about-hero-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .about-large-icon {
+    font-size: 4rem;
+  }
+
+  .about-section-title {
+    font-size: 1.5rem;
+  }
+
+  .about-icon {
+    font-size: 2rem;
+  }
+
+  .about-value-icon {
+    font-size: 1.75rem;
+  }
+
+  .about-avatar {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .about-feature-card .card-body {
+    padding: 1.25rem !important;
+  }
+}

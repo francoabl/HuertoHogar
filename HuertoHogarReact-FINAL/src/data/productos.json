@@ -1,0 +1,100 @@
+{
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Manzanas Rojas",
+      "descripcion": "Manzanas frescas y crujientes de excelente calidad",
+      "precio": 2500,
+      "categoria": "frutas",
+      "imagen": "assets/img/productos/manzanas.jpg"
+    },
+    {
+      "id": 2,
+      "nombre": "Tomates Frescos",
+      "descripcion": "Tomates maduros y jugosos, perfectos para ensaladas",
+      "precio": 1800,
+      "categoria": "verduras",
+      "imagen": "assets/img/productos/tomates.jpg"
+    },
+    {
+      "id": 3,
+      "nombre": "Lechuga Orgánica",
+      "descripcion": "Lechuga verde fresca cultivada sin pesticidas",
+      "precio": 1200,
+      "categoria": "organicos",
+      "imagen": "assets/img/productos/lechuga.jpg"
+    },
+    {
+      "id": 4,
+      "nombre": "Plátanos",
+      "descripcion": "Plátanos maduros llenos de nutrientes",
+      "precio": 1500,
+      "categoria": "frutas",
+      "imagen": "assets/img/productos/platanos.jpg"
+    },
+    {
+      "id": 5,
+      "nombre": "Queso Fresco",
+      "descripcion": "Queso artesanal elaborado con leche fresca",
+      "precio": 3500,
+      "categoria": "lacteos",
+      "imagen": "assets/img/productos/queso.jpg"
+    },
+    {
+      "id": 6,
+      "nombre": "Zanahorias",
+      "descripcion": "Zanahorias frescas y crujientes",
+      "precio": 1000,
+      "categoria": "verduras",
+      "imagen": "assets/img/productos/zanahorias.jpg"
+    },
+    {
+      "id": 7,
+      "nombre": "Fresas Orgánicas",
+      "descripcion": "Fresas dulces cultivadas orgánicamente",
+      "precio": 4500,
+      "categoria": "organicos",
+      "imagen": "assets/img/productos/fresas.jpg"
+    },
+    {
+      "id": 8,
+      "nombre": "Leche Fresca",
+      "descripcion": "Leche pasteurizada de la mejor calidad",
+      "precio": 2200,
+      "categoria": "lacteos",
+      "imagen": "assets/img/productos/leche.jpg"
+    },
+    {
+      "id": 9,
+      "nombre": "Brócoli",
+      "descripcion": "Brócoli verde fresco y nutritivo",
+      "precio": 2000,
+      "categoria": "verduras",
+      "imagen": "assets/img/productos/brocoli.jpg"
+    },
+    {
+      "id": 10,
+      "nombre": "Naranjas",
+      "descripcion": "Naranjas jugosas llenas de vitamina C",
+      "precio": 3000,
+      "categoria": "frutas",
+      "imagen": "assets/img/productos/naranjas.jpg"
+    },
+    {
+      "id": 11,
+      "nombre": "Huevos Camperos",
+      "descripcion": "Huevos frescos de gallinas criadas en libertad",
+      "precio": 2800,
+      "categoria": "lacteos",
+      "imagen": "assets/img/productos/huevos.jpg"
+    },
+    {
+      "id": 12,
+      "nombre": "Espinacas Orgánicas",
+      "descripcion": "Espinacas frescas sin químicos",
+      "precio": 1600,
+      "categoria": "organicos",
+      "imagen": "assets/img/productos/espinacas.jpg"
+    }
+  ]
+}

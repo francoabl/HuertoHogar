@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+HuertoHogarReact-FINAL/node_modules/
+
+# Build directories
+demo/target/
+HuertoHogarReact-FINAL/build/
+HuertoHogarReact-FINAL/dist/
+
+# Database files
+demo/data/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Maven
+demo/.mvn/wrapper/maven-wrapper.jar
+
+# Package files
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
