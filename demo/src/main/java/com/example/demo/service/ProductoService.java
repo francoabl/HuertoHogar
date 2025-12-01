@@ -4,14 +4,12 @@ import com.example.demo.entity.Producto;
 import com.example.demo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class ProductoService {
 
     @Autowired
@@ -20,8 +18,8 @@ public class ProductoService {
     /**
      * Obtiene un producto por ID
      */
-    public Optional<Producto> findById(Long id) {
-        if (id == null || id <= 0) {
+    public Optional<Producto> findById(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         return productoRepository.findById(id);
@@ -30,7 +28,7 @@ public class ProductoService {
     /**
      * Obtiene un producto por ID
      */
-    public Optional<Producto> obtenerPorId(Long id) {
+    public Optional<Producto> obtenerPorId(String id) {
         return findById(id);
     }
 
@@ -106,7 +104,7 @@ public class ProductoService {
      * Actualiza un producto existente (sobrecargado para recibir Producto)
      */
     public Producto actualizar(Producto producto) {
-        if (producto.getId() == null || producto.getId() <= 0) {
+        if (producto.getId() == null || producto.getId().trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         if (producto.getNombre() == null || producto.getNombre().trim().isEmpty()) {
@@ -132,8 +130,8 @@ public class ProductoService {
     /**
      * Actualiza un producto existente (versión original)
      */
-    public Producto actualizar(Long id, String nombre, String descripcion, BigDecimal precio, Integer stock, String categoria) {
-        if (id == null || id <= 0) {
+    public Producto actualizar(String id, String nombre, String descripcion, BigDecimal precio, Integer stock, String categoria) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
 
@@ -182,8 +180,8 @@ public class ProductoService {
     /**
      * Elimina un producto
      */
-    public void eliminar(Long id) {
-        if (id == null || id <= 0) {
+    public void eliminar(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         productoRepository.deleteById(id);
@@ -192,8 +190,8 @@ public class ProductoService {
     /**
      * Actualiza el stock de un producto
      */
-    public void actualizarStock(Long productoId, Integer cantidad) {
-        if (productoId == null || productoId <= 0) {
+    public void actualizarStock(String productoId, Integer cantidad) {
+        if (productoId == null || productoId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de producto inválido");
         }
         if (cantidad == null) {

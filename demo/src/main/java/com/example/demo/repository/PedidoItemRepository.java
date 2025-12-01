@@ -1,9 +1,10 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.PedidoItem;
-import org.springframework.data.jpa.repository.JpaRepository;
+// PedidoItem ya no necesita repositorio en MongoDB porque está embebido en Pedido
+// Este repositorio se mantiene por compatibilidad pero no se usa
+
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PedidoItemRepository extends JpaRepository<PedidoItem, Long> {
+public interface PedidoItemRepository {
 }

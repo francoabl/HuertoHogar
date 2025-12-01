@@ -53,45 +53,45 @@ const Cart = () => {
                           <div className="d-flex align-items-center">
                             <img
                               src={item.imagenUrl || item.imagen || '/assets/img/placeholder.jpg'}
-                              alt={item.nombre}
+                              alt={item.nombre || 'Producto'}
                               className="cart-item-image me-3"
                             />
                             <div>
-                              <h6 className="mb-1">{item.nombre}</h6>
-                              <small className="text-muted">{item.categoria}</small>
+                              <h6 className="mb-1">{item.nombre || 'Producto'}</h6>
+                              <small className="text-muted">{item.categoria || ''}</small>
                             </div>
                           </div>
                         </td>
                         <td className="align-middle">
-                          ${item.precio.toLocaleString()}
+                          ${(item.precio || 0).toLocaleString()}
                         </td>
                         <td className="align-middle">
                           <div className="quantity-controls">
                             <Button
                               variant="outline-secondary"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => updateQuantity(item.id, (item.quantity || 1) - 1)}
                             >
                               <i className="fas fa-minus"></i>
                             </Button>
                             <Form.Control
                               type="number"
                               min="1"
-                              value={item.quantity}
+                              value={item.quantity || 1}
                               onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1)}
                               className="quantity-input"
                             />
                             <Button
                               variant="outline-secondary"
                               size="sm"
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() => updateQuantity(item.id, (item.quantity || 1) + 1)}
                             >
                               <i className="fas fa-plus"></i>
                             </Button>
                           </div>
                         </td>
                         <td className="align-middle fw-bold">
-                          ${(item.precio * item.quantity).toLocaleString()}
+                          ${((item.precio || 0) * (item.quantity || 1)).toLocaleString()}
                         </td>
                         <td className="align-middle">
                           <Button

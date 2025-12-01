@@ -1,15 +1,15 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.index.Indexed;
 
-@Entity
-@Table(name = "roles")
+@Document(collection = "roles")
 public class Rol {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(unique = true, nullable = false)
+    @Indexed(unique = true)
     private String nombre; // ROLE_ADMIN, ROLE_CLIENTE
 
     public Rol() {
@@ -19,11 +19,11 @@ public class Rol {
         this.nombre = nombre;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

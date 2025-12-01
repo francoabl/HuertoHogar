@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.CarritoItemDTO;
 import com.example.demo.entity.CarritoItem;
 import com.example.demo.entity.Usuario;
 import com.example.demo.repository.CarritoItemRepository;
@@ -12,9 +13,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/carrito")
+@RequestMapping("/api/cart")
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:5173"})
 public class CarritoController {
 
@@ -28,7 +30,7 @@ public class CarritoController {
     private ProductoRepository productoRepository;
 
     @GetMapping
-    public ResponseEntity<List<CarritoItem>> obtenerCarrito(Authentication authentication) {
+    public ResponseEntity<?> obtenerCarrito(Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
             return ResponseEntity.status(401).build();
         }
@@ -42,10 +44,15 @@ public class CarritoController {
         }
 
         List<CarritoItem> items = carritoRepository.findByUsuario(usuario);
-        return ResponseEntity.ok(items);
+        List<CarritoItemDTO> itemDTOs = items.stream()
+                .map(CarritoItemDTO::new)
+                .collect(Collectors.toList());
+        Map<String, Object> response = new java.util.HashMap<>();
+        response.put("items", itemDTOs);
+        return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/agregar")
+    @PostMapping
     public ResponseEntity<?> agregarAlCarrito(
             Authentication authentication,
             @RequestBody Map<String, Object> request) {
@@ -62,8 +69,8 @@ public class CarritoController {
                 return ResponseEntity.status(404).build();
             }
 
-            Long productoId = Long.valueOf(request.get("productoId").toString());
-            Integer cantidad = Integer.valueOf(request.get("cantidad").toString());
+            String productoId = request.get("productId").toString();
+            Integer cantidad = Integer.valueOf(request.get("quantity").toString());
 
             if (cantidad <= 0) {
                 return ResponseEntity.badRequest().body(Map.of("error", "La cantidad debe ser mayor a 0"));
@@ -92,16 +99,70 @@ public class CarritoController {
                 carritoRepository.save(nuevoItem);
             }
 
-            return ResponseEntity.ok(Map.of("message", "Producto agregado al carrito"));
+            List<CarritoItem> items = carritoRepository.findByUsuario(usuario);
+            List<CarritoItemDTO> itemDTOs = items.stream()
+                    .map(CarritoItemDTO::new)
+                    .collect(Collectors.toList());
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("items", itemDTOs);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
-    @DeleteMapping("/eliminar/{productoId}")
+    @PutMapping("/{productoId}")
+    public ResponseEntity<?> actualizarCantidad(
+            Authentication authentication,
+            @PathVariable String productoId,
+            @RequestBody Map<String, Integer> request) {
+        try {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(401).build();
+            }
+
+            String email = authentication.getName();
+            Usuario usuario = usuarioRepository.findByEmail(email)
+                    .orElse(null);
+
+            if (usuario == null) {
+                return ResponseEntity.status(404).build();
+            }
+
+            Integer cantidad = request.get("quantity");
+            if (cantidad == null || cantidad < 0) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Cantidad inválida"));
+            }
+
+            var items = carritoRepository.findByUsuarioAndProductoId(usuario, productoId);
+            if (items.isEmpty()) {
+                return ResponseEntity.badRequest().body(Map.of("error", "Producto no encontrado en el carrito"));
+            }
+
+            CarritoItem item = items.get();
+            if (cantidad == 0) {
+                carritoRepository.delete(item);
+            } else {
+                item.setCantidad(cantidad);
+                carritoRepository.save(item);
+            }
+
+            List<CarritoItem> cartItems = carritoRepository.findByUsuario(usuario);
+            List<CarritoItemDTO> itemDTOs = cartItems.stream()
+                    .map(CarritoItemDTO::new)
+                    .collect(Collectors.toList());
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("items", itemDTOs);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @DeleteMapping("/{productoId}")
     public ResponseEntity<?> eliminarDelCarrito(
             Authentication authentication,
-            @PathVariable Long productoId) {
+            @PathVariable String productoId) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
                 return ResponseEntity.status(401).build();
@@ -121,13 +182,19 @@ public class CarritoController {
             }
 
             carritoRepository.delete(items.get());
-            return ResponseEntity.ok(Map.of("message", "Producto eliminado del carrito"));
+            List<CarritoItem> cartItems = carritoRepository.findByUsuario(usuario);
+            List<CarritoItemDTO> itemDTOs = cartItems.stream()
+                    .map(CarritoItemDTO::new)
+                    .collect(Collectors.toList());
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("items", itemDTOs);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
 
-    @DeleteMapping("/vaciar")
+    @PostMapping("/clear")
     public ResponseEntity<?> vaciarCarrito(Authentication authentication) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
@@ -143,7 +210,9 @@ public class CarritoController {
             }
 
             carritoRepository.deleteByUsuario(usuario);
-            return ResponseEntity.ok(Map.of("message", "Carrito vaciado"));
+            Map<String, Object> response = new java.util.HashMap<>();
+            response.put("items", List.of());
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

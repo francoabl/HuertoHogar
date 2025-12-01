@@ -1,7 +1,7 @@
 # 🌱 HuertoHogar - E-commerce Full Stack
 
 **Aplicación web completa para venta de productos agrícolas**  
-Stack: React + Spring Boot + Transbank Webpay Plus SDK
+Stack: React + Spring Boot + MongoDB Atlas + Transbank Webpay Plus SDK
 
 ---
 
@@ -11,10 +11,30 @@ Stack: React + Spring Boot + Transbank Webpay Plus SDK
 - **Node.js 18+** (para frontend React)
 - **Maven** (incluido con mvnw)
 - **npm** (viene con Node.js)
+- **MongoDB Atlas** (base de datos en la nube - gratuito)
 
 ---
 
 ## 🚀 INICIO RÁPIDO
+
+### ⚠️ IMPORTANTE: Configurar MongoDB Atlas primero
+
+Antes de iniciar la aplicación, debes configurar MongoDB Atlas:
+
+1. **Lee la guía completa**: `demo/MONGODB_SETUP.md`
+2. **Crea una cuenta gratuita** en MongoDB Atlas
+3. **Configura tu cluster** y obtén la cadena de conexión
+4. **Actualiza** `demo/src/main/resources/application.properties` con tus credenciales
+
+**Configuración rápida en `application.properties`:**
+```properties
+spring.mongodb.uri=mongodb+srv://<username>:<password>@<cluster-url>/huertohogar?retryWrites=true&w=majority
+spring.mongodb.database=huertohogar
+```
+
+📖 **Guía detallada paso a paso**: Ver `demo/MONGODB_SETUP.md`
+
+---
 
 ### Opción 1: Script Automático (Recomendado) ⚡
 
@@ -74,7 +94,7 @@ npm start
 | **Frontend** | 3000 | http://localhost:3000 | Aplicación React |
 | **Backend API** | 8080 | http://localhost:8080 | REST API Spring Boot |
 | **Transbank Proxy** | 3001 | http://localhost:3001 | Servidor SDK Transbank |
-| **H2 Database** | 8080 | http://localhost:8080/h2-console | Consola base de datos |
+| **MongoDB Atlas** | - | Cloud | Base de datos MongoDB (en la nube) |
 
 ---
 
@@ -181,8 +201,8 @@ En la página de Transbank, usa estos datos:
 - **Spring Boot 4.0.0** - Framework backend
 - **Spring Security** - Autenticación/Autorización
 - **JWT** - Tokens de sesión
-- **JPA/Hibernate** - ORM
-- **H2 Database** - Base de datos
+- **Spring Data MongoDB** - ODM (Object Document Mapper)
+- **MongoDB Atlas** - Base de datos NoSQL en la nube
 - **Maven** - Gestión de dependencias
 
 ### Integración de Pagos
@@ -239,7 +259,14 @@ curl http://localhost:8080/api/productos
 ```
 Debe retornar JSON con lista de productos.
 
-### 2. Servidor Transbank Proxy
+### 2. MongoDB Atlas Connection
+Verifica los logs del backend al iniciar. Deberías ver:
+```
+Cluster created with settings {hosts=[cluster0.xxxxx.mongodb.net...
+MongoDB ready to accept connections
+```
+
+### 3. Servidor Transbank Proxy
 ```powershell
 curl http://localhost:3001/health
 ```
@@ -288,6 +315,13 @@ cd HuertoHogarReact-FINAL
 npm install
 ```
 
+### Error: MongoDB connection failed
+
+1. Verifica que tu usuario y contraseña sean correctos en `application.properties`
+2. Asegúrate de que tu IP esté en la lista blanca de MongoDB Atlas (Network Access)
+3. Verifica la cadena de conexión completa
+4. **Consulta**: `demo/MONGODB_SETUP.md` para más detalles
+
 ### Error: El servidor proxy no inicia
 
 Verificar que el SDK de Transbank esté instalado:
@@ -307,16 +341,33 @@ Verificar que `WebConfig.java` en el backend permite el origen `http://localhost
 
 ---
 
-## 🗄️ Base de Datos H2
+## 🗄️ Base de Datos MongoDB Atlas
 
-### Acceso a la Consola
-- **URL:** http://localhost:8080/h2-console
-- **JDBC URL:** `jdbc:h2:file:./data/huertohogar`
-- **Username:** `sa`
-- **Password:** *(dejar vacío)*
+### Acceso a los datos
+- **Plataforma**: MongoDB Atlas Dashboard
+- **URL**: https://cloud.mongodb.com/
+- **Database**: `huertohogar`
+- **Colecciones**:
+  - `usuarios` - Usuarios del sistema
+  - `roles` - Roles (USER, ADMIN)
+  - `productos` - Catálogo de productos
+  - `pedidos` - Pedidos realizados
+  - `carrito_items` - Items en carritos de compra
 
-### Ubicación de Datos
-Los datos se persisten en: `demo/data/huertohogar.mv.db`
+### Ver datos
+1. Inicia sesión en MongoDB Atlas
+2. Ve a Database → Browse Collections
+3. Selecciona la base de datos `huertohogar`
+4. Explora las colecciones
+
+### Ventajas de MongoDB Atlas
+- ✅ **Gratis** hasta 512 MB (suficiente para desarrollo)
+- ✅ **En la nube** - accesible desde cualquier lugar
+- ✅ **Escalable** - fácil upgrade cuando sea necesario
+- ✅ **Backups automáticos** - en planes pagos
+- ✅ **Sin instalación local** - no necesitas instalar MongoDB
+
+📖 **Configuración completa**: Ver `demo/MONGODB_SETUP.md`
 
 ---
 
@@ -454,16 +505,18 @@ La aplicación está completamente funcional con:
 - ✅ Backend API REST
 - ✅ Frontend React moderno
 - ✅ Integración real con Transbank SDK
-- ✅ Base de datos con persistencia
+- ✅ Base de datos MongoDB Atlas en la nube
 - ✅ Autenticación JWT
 - ✅ Sistema de pagos funcional (ambiente de pruebas)
 
-**Siguiente paso:** Ejecuta `.\start-all-servers.ps1` y comienza a probar la aplicación!
+**Siguiente paso:** 
+1. Configura MongoDB Atlas siguiendo `demo/MONGODB_SETUP.md`
+2. Ejecuta `.\start-all-servers.ps1` y comienza a probar la aplicación!
 
 ---
 
-**Versión:** 2.0.0  
-**Última actualización:** Noviembre 2024  
+**Versión:** 3.0.0 (MongoDB)  
+**Última actualización:** Diciembre 2024  
 **Desarrollado con ❤️ por el equipo HuertoHogar**
 
 🌱 *Llevando productos frescos del campo a tu hogar*

@@ -16,6 +16,20 @@ export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // Validate and clean cart item
+  const validateCartItem = (item) => {
+    if (!item || typeof item !== 'object') return null
+    
+    return {
+      id: item.id || item.productId,
+      nombre: item.nombre || '',
+      precio: Number(item.precio) || 0,
+      imagenUrl: item.imagenUrl || item.imagen || '',
+      categoria: item.categoria || '',
+      quantity: Number(item.quantity) || Number(item.cantidad) || 1
+    }
+  }
+
   // Load cart from API on mount
   useEffect(() => {
     const loadCart = async () => {
@@ -25,16 +39,20 @@ export const CartProvider = ({ children }) => {
         if (token) {
           try {
             const response = await cartAPI.get()
-            setCart(response.data.items || [])
+            const items = (response.data.items || []).map(validateCartItem).filter(item => item !== null)
+            setCart(items)
           } catch (error) {
             // Si falla la API, usar localStorage
             if (error.code === 'ERR_NETWORK' || !error.response) {
               const savedCart = localStorage.getItem('huertohogar_cart')
               if (savedCart) {
                 try {
-                  setCart(JSON.parse(savedCart))
+                  const parsed = JSON.parse(savedCart)
+                  const items = parsed.map(validateCartItem).filter(item => item !== null)
+                  setCart(items)
                 } catch (e) {
                   console.error('Error loading cart from localStorage:', e)
+                  localStorage.removeItem('huertohogar_cart')
                 }
               }
             } else {
@@ -46,9 +64,12 @@ export const CartProvider = ({ children }) => {
           const savedCart = localStorage.getItem('huertohogar_cart')
           if (savedCart) {
             try {
-              setCart(JSON.parse(savedCart))
+              const parsed = JSON.parse(savedCart)
+              const items = parsed.map(validateCartItem).filter(item => item !== null)
+              setCart(items)
             } catch (e) {
               console.error('Error loading cart from localStorage:', e)
+              localStorage.removeItem('huertohogar_cart')
             }
           }
         }
@@ -66,7 +87,8 @@ export const CartProvider = ({ children }) => {
   const addToCart = async (product, quantity = 1) => {
     try {
       const response = await cartAPI.add(product.id, quantity)
-      setCart(response.data.items || [])
+      const items = (response.data.items || []).map(validateCartItem).filter(item => item !== null)
+      setCart(items)
       
       // Fallback: update local state if needed
       return {
@@ -85,14 +107,15 @@ export const CartProvider = ({ children }) => {
           localStorage.setItem('huertohogar_cart', JSON.stringify(newCart))
           return newCart
         } else {
-          const newCart = [...prevCart, {
+          const newItem = validateCartItem({
             id: product.id,
             nombre: product.nombre,
             precio: product.precio,
-            imagen: product.imagen,
+            imagenUrl: product.imagenUrl || product.imagen,
             categoria: product.categoria,
             quantity: quantity
-          }]
+          })
+          const newCart = [...prevCart, newItem]
           localStorage.setItem('huertohogar_cart', JSON.stringify(newCart))
           return newCart
         }
@@ -109,7 +132,8 @@ export const CartProvider = ({ children }) => {
   const removeFromCart = async (productId) => {
     try {
       const response = await cartAPI.remove(productId)
-      setCart(response.data.items || [])
+      const items = (response.data.items || []).map(validateCartItem).filter(item => item !== null)
+      setCart(items)
     } catch (error) {
       console.error('Error removing from cart:', error)
       // Fallback: update local cart
@@ -128,7 +152,8 @@ export const CartProvider = ({ children }) => {
 
     try {
       const response = await cartAPI.update(productId, newQuantity)
-      setCart(response.data.items || [])
+      const items = (response.data.items || []).map(validateCartItem).filter(item => item !== null)
+      setCart(items)
     } catch (error) {
       console.error('Error updating quantity:', error)
       // Fallback: update local cart
@@ -157,12 +182,19 @@ export const CartProvider = ({ children }) => {
 
   // Get cart item count
   const getCartCount = () => {
-    return cart.reduce((total, item) => total + item.quantity, 0)
+    return cart.reduce((total, item) => {
+      const quantity = item?.quantity || 0
+      return total + quantity
+    }, 0)
   }
 
   // Get cart total
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.precio * item.quantity), 0)
+    return cart.reduce((total, item) => {
+      const precio = item?.precio || 0
+      const quantity = item?.quantity || 0
+      return total + (precio * quantity)
+    }, 0)
   }
 
   // Check if product is in cart

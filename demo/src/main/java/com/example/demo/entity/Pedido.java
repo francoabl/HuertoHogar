@@ -1,34 +1,38 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "pedidos")
+@Document(collection = "pedidos")
 public class Pedido {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @DBRef
     private Usuario usuario;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "pedido_id")
     private List<PedidoItem> items = new ArrayList<>();
 
-    @Column(nullable = false)
     private BigDecimal total;
 
-    @Column(nullable = false)
     private LocalDateTime fecha;
 
-    @Column(nullable = false)
     private String estado; // PENDIENTE, CONFIRMADO, ENVIADO, ENTREGADO, CANCELADO
+    
+    // Información de pago Transbank
+    private String metodoPago; // "Webpay Plus", "Efectivo", etc.
+    private String numeroOrden; // buyOrder de Transbank
+    private String codigoAutorizacion; // authorizationCode de Transbank
+    private String codigoRespuesta; // responseCode de Transbank
+    private LocalDateTime fechaPago;
+    private String detallesTarjeta; // Últimos 4 dígitos de la tarjeta
+    private String tipoTarjeta; // "CREDIT", "DEBIT"
+    private Integer cuotas; // Número de cuotas
 
     public Pedido() {
         this.fecha = LocalDateTime.now();
@@ -41,11 +45,11 @@ public class Pedido {
         this.total = total;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -87,6 +91,70 @@ public class Pedido {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getNumeroOrden() {
+        return numeroOrden;
+    }
+
+    public void setNumeroOrden(String numeroOrden) {
+        this.numeroOrden = numeroOrden;
+    }
+
+    public String getCodigoAutorizacion() {
+        return codigoAutorizacion;
+    }
+
+    public void setCodigoAutorizacion(String codigoAutorizacion) {
+        this.codigoAutorizacion = codigoAutorizacion;
+    }
+
+    public String getCodigoRespuesta() {
+        return codigoRespuesta;
+    }
+
+    public void setCodigoRespuesta(String codigoRespuesta) {
+        this.codigoRespuesta = codigoRespuesta;
+    }
+
+    public LocalDateTime getFechaPago() {
+        return fechaPago;
+    }
+
+    public void setFechaPago(LocalDateTime fechaPago) {
+        this.fechaPago = fechaPago;
+    }
+
+    public String getDetallesTarjeta() {
+        return detallesTarjeta;
+    }
+
+    public void setDetallesTarjeta(String detallesTarjeta) {
+        this.detallesTarjeta = detallesTarjeta;
+    }
+
+    public String getTipoTarjeta() {
+        return tipoTarjeta;
+    }
+
+    public void setTipoTarjeta(String tipoTarjeta) {
+        this.tipoTarjeta = tipoTarjeta;
+    }
+
+    public Integer getCuotas() {
+        return cuotas;
+    }
+
+    public void setCuotas(Integer cuotas) {
+        this.cuotas = cuotas;
     }
 
     @Override

@@ -2,19 +2,49 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Card, Form, Button, Nav, Tab, Alert, Spinner, Table, Badge } from 'react-bootstrap';
 import { useAuth } from '../context/AuthContext';
+import { ordersAPI } from '../services/api';
 import './Profile.css';
 
 // Componente para mostrar historial de pedidos
 function OrdersHistory() {
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Cargar pedidos desde localStorage
-    const savedOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-    // Ordenar por fecha más reciente primero
-    const sortedOrders = savedOrders.sort((a, b) => new Date(b.date) - new Date(a.date));
-    setOrders(sortedOrders);
+    const loadOrders = async () => {
+      try {
+        const response = await ordersAPI.getAll();
+        // Ordenar por fecha más reciente primero
+        const sortedOrders = response.data.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+        setOrders(sortedOrders);
+      } catch (err) {
+        console.error('Error al cargar pedidos:', err);
+        setError('Error al cargar el historial de pedidos');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadOrders();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-5">
+        <Spinner animation="border" variant="success" />
+        <p className="mt-3">Cargando pedidos...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="danger">
+        {error}
+      </Alert>
+    );
+  }
 
   if (orders.length === 0) {
     return (
@@ -36,15 +66,17 @@ function OrdersHistory() {
       <h5 className="mb-4">
         <i className="fas fa-history me-2"></i>Historial de Pedidos
       </h5>
-      {orders.map((order, index) => (
-        <Card key={index} className="mb-3">
+      {orders.map((order) => (
+        <Card key={order.id} className="mb-3">
           <Card.Header className="d-flex justify-content-between align-items-center">
             <div>
-              <strong>Pedido #{order.orderNumber}</strong>
-              <Badge bg="success" className="ms-2">{order.status}</Badge>
+              <strong>Pedido #{order.numeroOrden || order.id}</strong>
+              <Badge bg={order.estado === 'CONFIRMADO' ? 'success' : 'warning'} className="ms-2">
+                {order.estado}
+              </Badge>
             </div>
             <small className="text-muted">
-              {new Date(order.date).toLocaleDateString('es-CL', {
+              {new Date(order.fecha).toLocaleDateString('es-CL', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
@@ -69,9 +101,9 @@ function OrdersHistory() {
                   <tbody>
                     {order.items.map((item, idx) => (
                       <tr key={idx}>
-                        <td>{item.nombre}</td>
+                        <td>{item.producto?.nombre || item.nombre}</td>
                         <td className="text-center">{item.cantidad}</td>
-                        <td className="text-end">${item.precio.toLocaleString()}</td>
+                        <td className="text-end">${item.precioUnitario?.toLocaleString() || item.precio?.toLocaleString()}</td>
                         <td className="text-end">${item.subtotal.toLocaleString()}</td>
                       </tr>
                     ))}
@@ -80,24 +112,34 @@ function OrdersHistory() {
               </Col>
               <Col md={4}>
                 <h6 className="mb-3">Detalles del Pago:</h6>
-                <div className="mb-2">
-                  <small className="text-muted">Método de pago:</small>
-                  <div>
-                    <img 
-                      src="https://www.webpay.cl/wp-content/uploads/2019/06/webpay-plus-logo.png"
-                      alt="Webpay Plus"
-                      style={{ maxWidth: '100px' }}
-                    />
+                {order.metodoPago && (
+                  <div className="mb-2">
+                    <small className="text-muted">Método de pago:</small>
+                    <div>
+                      <img 
+                        src="https://www.webpay.cl/wp-content/uploads/2019/06/webpay-plus-logo.png"
+                        alt="Webpay Plus"
+                        style={{ maxWidth: '100px' }}
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="mb-2">
-                  <small className="text-muted">Código de autorización:</small>
-                  <div className="fw-bold">{order.authCode}</div>
-                </div>
+                )}
+                {order.codigoAutorizacion && (
+                  <div className="mb-2">
+                    <small className="text-muted">Código de autorización:</small>
+                    <div className="fw-bold">{order.codigoAutorizacion}</div>
+                  </div>
+                )}
+                {order.detallesTarjeta && (
+                  <div className="mb-2">
+                    <small className="text-muted">Tarjeta:</small>
+                    <div>{order.detallesTarjeta}</div>
+                  </div>
+                )}
                 <hr />
                 <div className="d-flex justify-content-between align-items-center">
                   <strong>Total pagado:</strong>
-                  <strong className="text-success fs-5">${order.amount.toLocaleString()}</strong>
+                  <strong className="text-success fs-5">${order.total.toLocaleString()}</strong>
                 </div>
               </Col>
             </Row>

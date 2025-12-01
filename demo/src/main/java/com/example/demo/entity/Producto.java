@@ -1,30 +1,24 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "productos")
+@Document(collection = "productos")
 public class Producto {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
-    @Column(nullable = false)
     private String nombre;
 
-    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
-    @Column(nullable = false)
     private BigDecimal precio;
 
-    @Column(nullable = false)
     private Integer stock;
 
     private String imagenUrl;
 
-    @Column(nullable = false)
     private String categoria;
 
     public Producto() {
@@ -38,11 +32,11 @@ public class Producto {
         this.categoria = categoria;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

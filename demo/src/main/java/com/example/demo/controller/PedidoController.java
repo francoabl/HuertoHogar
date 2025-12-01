@@ -68,7 +68,7 @@ public class PedidoController {
     @GetMapping("/{id}")
     public ResponseEntity<Pedido> obtenerPedido(
             Authentication authentication,
-            @PathVariable Long id) {
+            @PathVariable String id) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
                 return ResponseEntity.status(401).build();
@@ -101,7 +101,7 @@ public class PedidoController {
     @PutMapping("/{id}/estado")
     public ResponseEntity<?> actualizarEstadoPedido(
             Authentication authentication,
-            @PathVariable Long id,
+            @PathVariable String id,
             @RequestBody Map<String, String> request) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
@@ -125,10 +125,57 @@ public class PedidoController {
         }
     }
 
+    @PostMapping("/{id}/confirmar-pago")
+    public ResponseEntity<?> confirmarPago(
+            Authentication authentication,
+            @PathVariable String id,
+            @RequestBody Map<String, Object> paymentData) {
+        try {
+            if (authentication == null || !authentication.isAuthenticated()) {
+                return ResponseEntity.status(401).build();
+            }
+
+            String email = authentication.getName();
+            Usuario usuario = usuarioRepository.findByEmail(email)
+                    .orElse(null);
+
+            if (usuario == null) {
+                return ResponseEntity.status(404).build();
+            }
+
+            var pedido = pedidoService.obtenerPedidoPorId(id);
+            if (pedido.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            // Verificar que el usuario sea el dueño del pedido
+            if (!pedido.get().getUsuario().getId().equals(usuario.getId())) {
+                return ResponseEntity.status(403).build();
+            }
+
+            // Confirmar pago con información de Transbank
+            Pedido pedidoConfirmado = pedidoService.confirmarPago(
+                    id,
+                    (String) paymentData.get("numeroOrden"),
+                    (String) paymentData.get("codigoAutorizacion"),
+                    (String) paymentData.get("codigoRespuesta"),
+                    (String) paymentData.get("detallesTarjeta"),
+                    (String) paymentData.get("tipoTarjeta"),
+                    (Integer) paymentData.get("cuotas")
+            );
+
+            return ResponseEntity.ok(pedidoConfirmado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> cancelarPedido(
             Authentication authentication,
-            @PathVariable Long id) {
+            @PathVariable String id) {
         try {
             if (authentication == null || !authentication.isAuthenticated()) {
                 return ResponseEntity.status(401).build();

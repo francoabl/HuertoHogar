@@ -3,7 +3,7 @@ package com.example.demo.dto;
 import java.util.List;
 
 public class UserInfoResponse {
-    private Long id;
+    private String id;
     private String nombre;
     private String email;
     private List<String> roles;
@@ -11,18 +11,18 @@ public class UserInfoResponse {
     public UserInfoResponse() {
     }
 
-    public UserInfoResponse(Long id, String nombre, String email, List<String> roles) {
+    public UserInfoResponse(String id, String nombre, String email, List<String> roles) {
         this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.roles = roles;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

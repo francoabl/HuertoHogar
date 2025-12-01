@@ -98,15 +98,15 @@ public class DataLoader implements CommandLineRunner {
             crearProducto("Naranjas", "Naranjas dulces y jugosas", new BigDecimal("3590"), 45, "Frutas", "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=500");
 
             // Productos de Hierbas Aromáticas
-            crearProducto("Albahaca", "Albahaca fresca aromática", new BigDecimal("2390"), 25, "Hierbas", "https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=500");
-            crearProducto("Perejil", "Perejil fresco y oloroso", new BigDecimal("1590"), 30, "Hierbas", "https://images.unsplash.com/photo-1627524647118-44c299545881?w=500");
-            crearProducto("Menta", "Menta fresca para té", new BigDecimal("1990"), 20, "Hierbas", "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=500");
+            crearProducto("Albahaca", "Albahaca fresca aromática", new BigDecimal("2390"), 25, "Hierbas", "https://images.unsplash.com/photo-1618375569909-3c8616cf7733?w=500&auto=format&fit=crop&q=80");
+            crearProducto("Perejil", "Perejil fresco y oloroso", new BigDecimal("1590"), 30, "Hierbas", "https://images.unsplash.com/photo-1607806691516-f6f1eee8c617?w=500&auto=format&fit=crop&q=80");
+            crearProducto("Menta", "Menta fresca para té", new BigDecimal("1990"), 20, "Hierbas", "https://images.unsplash.com/photo-1628556270448-4d4e4148e1b1?w=500&auto=format&fit=crop&q=80");
 
             // Productos de Productos de Jardinería
-            crearProducto("Maceta Cerámica 15cm", "Maceta cerámica decorativa", new BigDecimal("10390"), 100, "Jardinería", "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500");
-            crearProducto("Tierra de Cultivo 5L", "Tierra premium para plantas", new BigDecimal("7190"), 80, "Jardinería", "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500");
-            crearProducto("Fertilizante Orgánico", "Fertilizante natural orgánico", new BigDecimal("11990"), 60, "Jardinería", "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500");
-            crearProducto("Regadera 2L", "Regadera de plástico", new BigDecimal("4790"), 40, "Jardinería", "https://images.unsplash.com/photo-1610718909945-10daf85a5e3f?w=500");
+            crearProducto("Maceta Cerámica 15cm", "Maceta cerámica decorativa", new BigDecimal("10390"), 100, "Jardinería", "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500&auto=format&fit=crop&q=80");
+            crearProducto("Tierra de Cultivo 5L", "Tierra premium para plantas", new BigDecimal("7190"), 80, "Jardinería", "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=500&auto=format&fit=crop&q=80");
+            crearProducto("Fertilizante Orgánico", "Fertilizante natural orgánico", new BigDecimal("11990"), 60, "Jardinería", "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=500&auto=format&fit=crop&q=80");
+            crearProducto("Regadera 2L", "Regadera de plástico resistente", new BigDecimal("4790"), 40, "Jardinería", "https://images.unsplash.com/photo-1523301343968-6a6ebf63c672?w=500&auto=format&fit=crop&q=80");
 
             System.out.println("✓ 15 Productos de prueba creados");
         }

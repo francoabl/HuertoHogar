@@ -1,23 +1,14 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import java.math.BigDecimal;
 
-@Entity
-@Table(name = "pedido_items")
 public class PedidoItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "producto_id", nullable = false)
+    @DBRef
     private Producto producto;
 
-    @Column(nullable = false)
     private Integer cantidad;
 
-    @Column(nullable = false)
     private BigDecimal precioUnitario;
 
     public PedidoItem() {
@@ -27,14 +18,6 @@ public class PedidoItem {
         this.producto = producto;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Producto getProducto() {
@@ -68,8 +51,7 @@ public class PedidoItem {
     @Override
     public String toString() {
         return "PedidoItem{" +
-                "id=" + id +
-                ", cantidad=" + cantidad +
+                "cantidad=" + cantidad +
                 ", precioUnitario=" + precioUnitario +
                 '}';
     }

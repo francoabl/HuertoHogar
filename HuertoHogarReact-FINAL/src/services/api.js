@@ -77,9 +77,11 @@ export const cartAPI = {
 
 // Orders endpoints
 export const ordersAPI = {
-  create: (orderData) => apiClient.post('/orders', orderData),
-  getAll: () => apiClient.get('/orders'),
-  getById: (id) => apiClient.get(`/orders/${id}`)
+  createFromCart: () => apiClient.post('/pedidos/desde-carrito'),
+  getAll: () => apiClient.get('/pedidos'),
+  getById: (id) => apiClient.get(`/pedidos/${id}`),
+  confirmPayment: (id, paymentData) => apiClient.post(`/pedidos/${id}/confirmar-pago`, paymentData),
+  updateStatus: (id, status) => apiClient.put(`/pedidos/${id}/estado`, { estado: status })
 }
 
 // Users endpoints

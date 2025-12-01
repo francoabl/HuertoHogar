@@ -1,12 +1,12 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Rol;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface RolRepository extends JpaRepository<Rol, Long> {
+public interface RolRepository extends MongoRepository<Rol, String> {
     Optional<Rol> findByNombre(String nombre);
 }

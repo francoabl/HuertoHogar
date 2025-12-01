@@ -4,7 +4,6 @@ import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional
 public class PedidoService {
 
     @Autowired
@@ -27,14 +25,11 @@ public class PedidoService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    @Autowired
-    private PedidoItemRepository pedidoItemRepository;
-
     /**
      * Obtiene un pedido por ID
      */
-    public Optional<Pedido> findById(Long id) {
-        if (id == null || id <= 0) {
+    public Optional<Pedido> findById(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         return pedidoRepository.findById(id);
@@ -43,15 +38,15 @@ public class PedidoService {
     /**
      * Obtiene un pedido por ID
      */
-    public Optional<Pedido> obtenerPedidoPorId(Long id) {
+    public Optional<Pedido> obtenerPedidoPorId(String id) {
         return findById(id);
     }
 
     /**
      * Obtiene todos los pedidos de un usuario
      */
-    public List<Pedido> obtenerPedidosUsuario(Long usuarioId) {
-        if (usuarioId == null || usuarioId <= 0) {
+    public List<Pedido> obtenerPedidosUsuario(String usuarioId) {
+        if (usuarioId == null || usuarioId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de usuario inválido");
         }
 
@@ -64,7 +59,7 @@ public class PedidoService {
     /**
      * Obtiene todos los pedidos de un usuario
      */
-    public List<Pedido> obtenerPedidosPorUsuario(Long usuarioId) {
+    public List<Pedido> obtenerPedidosPorUsuario(String usuarioId) {
         return obtenerPedidosUsuario(usuarioId);
     }
 
@@ -81,8 +76,8 @@ public class PedidoService {
     /**
      * Obtiene pedidos de un usuario con estado específico
      */
-    public List<Pedido> obtenerPedidosUsuarioPorEstado(Long usuarioId, String estado) {
-        if (usuarioId == null || usuarioId <= 0) {
+    public List<Pedido> obtenerPedidosUsuarioPorEstado(String usuarioId, String estado) {
+        if (usuarioId == null || usuarioId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de usuario inválido");
         }
         if (estado == null || estado.trim().isEmpty()) {
@@ -99,8 +94,8 @@ public class PedidoService {
      * Crea un pedido desde el carrito del usuario
      * Valida stock y calcula el total automáticamente
      */
-    public Pedido crearPedidoDesdeCarrito(Long usuarioId) {
-        if (usuarioId == null || usuarioId <= 0) {
+    public Pedido crearPedidoDesdeCarrito(String usuarioId) {
+        if (usuarioId == null || usuarioId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de usuario inválido");
         }
 
@@ -167,8 +162,8 @@ public class PedidoService {
     /**
      * Crea un pedido manualmente especificando items
      */
-    public Pedido crearPedido(Long usuarioId, List<PedidoItem> items) {
-        if (usuarioId == null || usuarioId <= 0) {
+    public Pedido crearPedido(String usuarioId, List<PedidoItem> items) {
+        if (usuarioId == null || usuarioId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de usuario inválido");
         }
         if (items == null || items.isEmpty()) {
@@ -208,8 +203,8 @@ public class PedidoService {
     /**
      * Actualiza el estado de un pedido
      */
-    public Pedido actualizarEstado(Long pedidoId, String nuevoEstado) {
-        if (pedidoId == null || pedidoId <= 0) {
+    public Pedido actualizarEstado(String pedidoId, String nuevoEstado) {
+        if (pedidoId == null || pedidoId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de pedido inválido");
         }
         if (nuevoEstado == null || nuevoEstado.trim().isEmpty()) {
@@ -226,10 +221,37 @@ public class PedidoService {
     }
 
     /**
+     * Confirma el pago de un pedido con información de Transbank
+     */
+    public Pedido confirmarPago(String pedidoId, String numeroOrden, String codigoAutorizacion, 
+                                String codigoRespuesta, String detallesTarjeta, 
+                                String tipoTarjeta, Integer cuotas) {
+        if (pedidoId == null || pedidoId.trim().isEmpty()) {
+            throw new IllegalArgumentException("ID de pedido inválido");
+        }
+
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new IllegalArgumentException("Pedido no encontrado con ID: " + pedidoId));
+
+        // Actualizar información de pago
+        pedido.setEstado("CONFIRMADO");
+        pedido.setMetodoPago("Webpay Plus");
+        pedido.setNumeroOrden(numeroOrden);
+        pedido.setCodigoAutorizacion(codigoAutorizacion);
+        pedido.setCodigoRespuesta(codigoRespuesta);
+        pedido.setFechaPago(LocalDateTime.now());
+        pedido.setDetallesTarjeta(detallesTarjeta);
+        pedido.setTipoTarjeta(tipoTarjeta);
+        pedido.setCuotas(cuotas);
+
+        return pedidoRepository.save(pedido);
+    }
+
+    /**
      * Calcula el total de un pedido (suma de subtotales)
      */
-    public BigDecimal calcularTotal(Long pedidoId) {
-        if (pedidoId == null || pedidoId <= 0) {
+    public BigDecimal calcularTotal(String pedidoId) {
+        if (pedidoId == null || pedidoId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de pedido inválido");
         }
 

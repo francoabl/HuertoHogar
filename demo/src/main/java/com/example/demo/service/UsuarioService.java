@@ -7,13 +7,10 @@ import com.example.demo.repository.RolRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.Set;
 
 @Service
-@Transactional
 public class UsuarioService {
 
     @Autowired
@@ -72,8 +69,8 @@ public class UsuarioService {
     /**
      * Obtiene un usuario por ID
      */
-    public Optional<Usuario> findById(Long id) {
-        if (id == null || id <= 0) {
+    public Optional<Usuario> findById(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         return usuarioRepository.findById(id);
@@ -82,8 +79,8 @@ public class UsuarioService {
     /**
      * Asigna un rol a un usuario
      */
-    public Usuario asignarRol(Long usuarioId, String nombreRol) {
-        if (usuarioId == null || usuarioId <= 0) {
+    public Usuario asignarRol(String usuarioId, String nombreRol) {
+        if (usuarioId == null || usuarioId.trim().isEmpty()) {
             throw new IllegalArgumentException("ID de usuario inválido");
         }
         if (nombreRol == null || nombreRol.trim().isEmpty()) {
@@ -110,8 +107,8 @@ public class UsuarioService {
     /**
      * Elimina un usuario por ID
      */
-    public void eliminar(Long id) {
-        if (id == null || id <= 0) {
+    public void eliminar(String id) {
+        if (id == null || id.trim().isEmpty()) {
             throw new IllegalArgumentException("ID inválido");
         }
         usuarioRepository.deleteById(id);

@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
 import transbankService from '../services/transbank'
+import { ordersAPI } from '../services/api'
 import './CheckoutTransbank.css'
 
 const CheckoutTransbank = () => {
@@ -49,32 +50,32 @@ const CheckoutTransbank = () => {
 
       // Verificar que el pago fue aprobado
       if (response.status === 'AUTHORIZED' && response.responseCode === 0) {
-        // Guardar información del pedido
-        const order = {
-          orderNumber: response.buyOrder,
-          authCode: response.authorizationCode,
-          amount: response.amount,
-          date: new Date(response.transactionDate).toISOString(),
-          items: JSON.parse(localStorage.getItem('pendingCartItems') || '[]'),
-          customer: JSON.parse(localStorage.getItem('pendingCustomer') || '{}'),
-          status: 'CONFIRMADO',
-          paymentMethod: 'Webpay Plus',
-          transactionDetails: {
-            vci: response.vci,
-            cardDetail: response.cardDetail,
-            paymentTypeCode: response.paymentTypeCode,
-            installmentsNumber: response.installmentsNumber
-          }
+        // Recuperar el ID del pedido pendiente
+        const pendingOrderId = localStorage.getItem('pendingOrderId')
+
+        if (!pendingOrderId) {
+          throw new Error('No se encontró el pedido pendiente')
         }
 
-        // Guardar en localStorage
-        const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]')
-        existingOrders.push(order)
-        localStorage.setItem('orders', JSON.stringify(existingOrders))
+        // Confirmar el pago en el backend con información de Transbank
+        const paymentData = {
+          numeroOrden: response.buyOrder,
+          codigoAutorizacion: response.authorizationCode,
+          codigoRespuesta: String(response.responseCode),
+          detallesTarjeta: response.cardDetail?.cardNumber || '',
+          tipoTarjeta: response.paymentTypeCode === 'VD' ? 'DEBIT' : 'CREDIT',
+          cuotas: response.installmentsNumber || 1
+        }
+
+        await ordersAPI.confirmPayment(pendingOrderId, paymentData)
+
+        console.log('✅ Pedido confirmado en base de datos:', pendingOrderId)
 
         // Limpiar datos temporales
+        localStorage.removeItem('pendingOrderId')
         localStorage.removeItem('pendingCartItems')
         localStorage.removeItem('pendingCustomer')
+        localStorage.removeItem('orders') // Ya no necesitamos localStorage para pedidos
 
         // Limpiar carrito
         clearCart()
@@ -123,23 +124,23 @@ const CheckoutTransbank = () => {
     setError('')
 
     try {
-      // Generar número de orden único
+      // Paso 1: Crear el pedido en el backend (estado PENDIENTE)
+      const pedidoResponse = await ordersAPI.createFromCart()
+      const pedido = pedidoResponse.data
+      
+      console.log('✅ Pedido creado en base de datos:', pedido)
+
+      // Guardar el ID del pedido para usarlo cuando regresemos de Transbank
+      localStorage.setItem('pendingOrderId', pedido.id)
+
+      // Paso 2: Preparar datos para Transbank
       const buyOrder = 'ORD-' + Date.now()
       const sessionId = 'SES-' + currentUser.email + '-' + Date.now()
-      const amount = getCartTotal()
+      const amount = pedido.total
       const returnUrl = window.location.origin + '/checkout' // Transbank redirige aquí con token_ws
 
-      // Guardar datos del carrito y usuario en localStorage temporal
-      // (se usarán cuando regresemos de Transbank)
-      localStorage.setItem('pendingCartItems', JSON.stringify(
-        cart.map(item => ({
-          id: item.id,
-          nombre: item.nombre,
-          cantidad: item.quantity,
-          precio: item.precio,
-          subtotal: item.precio * item.quantity
-        }))
-      ))
+      // Guardar datos temporales (para mostrar en confirmación)
+      localStorage.setItem('pendingCartItems', JSON.stringify(pedido.items))
       localStorage.setItem('pendingCustomer', JSON.stringify({
         nombre: currentUser.nombre,
         email: currentUser.email
@@ -152,7 +153,7 @@ const CheckoutTransbank = () => {
         returnUrl
       })
 
-      // Crear transacción con Transbank a través del proxy
+      // Paso 3: Crear transacción con Transbank a través del proxy
       const response = await transbankService.createTransaction(
         buyOrder,
         sessionId,
@@ -162,12 +163,21 @@ const CheckoutTransbank = () => {
 
       console.log('Transacción creada, redirigiendo a Transbank...', response)
 
-      // Redirigir al usuario a la página de pago de Transbank
+      // Paso 4: Redirigir al usuario a la página de pago de Transbank
       window.location.href = `${response.url}?token_ws=${response.token}`
 
     } catch (err) {
       console.error('Error al procesar el pago:', err)
-      setError(err.message || 'Error al procesar el pago. Por favor intenta nuevamente.')
+      
+      // Si es error 401, la sesión expiró
+      if (err.response && err.response.status === 401) {
+        setError('Tu sesión ha expirado. Por favor inicia sesión nuevamente.')
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
+      } else {
+        setError(err.message || 'Error al procesar el pago. Por favor intenta nuevamente.')
+      }
       setLoading(false)
     }
   }
