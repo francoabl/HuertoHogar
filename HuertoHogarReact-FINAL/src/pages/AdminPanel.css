@@ -1,0 +1,134 @@
+.admin-panel-page {
+  padding: 2rem 0 4rem;
+  min-height: 100vh;
+  background-color: #f8f9fa;
+}
+
+.admin-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  margin-bottom: 2rem;
+}
+
+.admin-panel-page .nav-tabs {
+  border-bottom: 2px solid var(--primary-green);
+}
+
+.admin-panel-page .nav-tabs .nav-link {
+  color: #666;
+  font-weight: 500;
+  border: none;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.admin-panel-page .nav-tabs .nav-link:hover {
+  color: var(--primary-green);
+  border-bottom-color: var(--primary-green);
+}
+
+.admin-panel-page .nav-tabs .nav-link.active {
+  color: var(--primary-green);
+  background-color: transparent;
+  border-bottom-color: var(--primary-green);
+  font-weight: 600;
+}
+
+.admin-panel-page .card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-panel-page .card-header {
+  background-color: var(--primary-green);
+  color: white;
+  border-radius: 15px 15px 0 0 !important;
+  padding: 1rem 1.5rem;
+}
+
+.admin-panel-page .table {
+  margin-bottom: 0;
+}
+
+.admin-panel-page .table thead {
+  background-color: #f8f9fa;
+}
+
+.admin-panel-page .table th {
+  border: none;
+  font-weight: 600;
+  color: var(--primary-green);
+  padding: 1rem;
+}
+
+.admin-panel-page .table td {
+  padding: 1rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.admin-panel-page .table tbody tr:hover {
+  background-color: #f8f9fa;
+}
+
+.admin-panel-page .btn-sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+}
+
+.admin-panel-page .badge {
+  padding: 0.5rem 0.75rem;
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+
+.admin-panel-page .modal-header {
+  background-color: var(--primary-green);
+  color: white;
+}
+
+.admin-panel-page .modal-header .btn-close {
+  filter: brightness(0) invert(1);
+}
+
+.admin-panel-page .modal-title {
+  font-weight: 600;
+}
+
+.admin-panel-page .form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.admin-panel-page .form-control,
+.admin-panel-page .form-select {
+  border-radius: 0.5rem;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+}
+
+.admin-panel-page .form-control:focus,
+.admin-panel-page .form-select:focus {
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .admin-title {
+    font-size: 1.75rem;
+  }
+
+  .admin-panel-page .table {
+    font-size: 0.875rem;
+  }
+
+  .admin-panel-page .table th,
+  .admin-panel-page .table td {
+    padding: 0.5rem;
+  }
+}

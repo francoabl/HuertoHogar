@@ -78,6 +78,19 @@ const Navigation = () => {
               )}
             </Nav.Link>
 
+            {/* Admin Panel Button - Only for admins */}
+            {currentUser && isAdmin() && (
+              <Nav.Link 
+                as={Link} 
+                to="/admin" 
+                className="admin-panel-btn ms-lg-2" 
+                onClick={closeMenu}
+              >
+                <i className="fas fa-tools me-1"></i>
+                Panel Admin
+              </Nav.Link>
+            )}
+
             {/* Auth buttons/dropdown */}
             {currentUser ? (
               <NavDropdown 

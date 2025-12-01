@@ -238,7 +238,26 @@ const register = async (userData) => {
 
   // Check if user is admin
   const isAdmin = () => {
-    return currentUser?.role === 'admin'
+    if (!currentUser) return false
+    
+    // Verificar si tiene el campo role (string)
+    if (currentUser.role === 'admin' || currentUser.role === 'ADMIN' || currentUser.role === 'ROLE_ADMIN') {
+      return true
+    }
+    
+    // Verificar si tiene el campo roles (array)
+    if (currentUser.roles && Array.isArray(currentUser.roles)) {
+      return currentUser.roles.some(rol => 
+        rol.nombre === 'ADMIN' || 
+        rol.nombre === 'admin' || 
+        rol.nombre === 'ROLE_ADMIN' ||
+        rol === 'ADMIN' || 
+        rol === 'admin' ||
+        rol === 'ROLE_ADMIN'
+      )
+    }
+    
+    return false
   }
 
   const value = {

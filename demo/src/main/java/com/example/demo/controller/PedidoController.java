@@ -2,10 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Pedido;
 import com.example.demo.entity.Usuario;
+import com.example.demo.repository.PedidoRepository;
 import com.example.demo.repository.UsuarioRepository;
 import com.example.demo.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,17 @@ public class PedidoController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    // Endpoint para administradores - obtener todos los pedidos
+    @GetMapping("/admin/todos")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<Pedido>> obtenerTodosPedidos() {
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        return ResponseEntity.ok(pedidos);
+    }
 
     @GetMapping
     public ResponseEntity<List<Pedido>> obtenerPedidos(Authentication authentication) {

@@ -12,7 +12,7 @@ import About from './pages/About'
 import Contact from './pages/Contact'
 import Blog from './pages/Blog'
 import BlogDetail from './pages/BlogDetail'
-import Admin from './pages/Admin'
+import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './components/ProtectedRoute'
 import './App.css'
 
@@ -43,7 +43,7 @@ function App() {
           path="/admin" 
           element={
             <ProtectedRoute adminOnly>
-              <Admin />
+              <AdminPanel />
             </ProtectedRoute>
           } 
         />
