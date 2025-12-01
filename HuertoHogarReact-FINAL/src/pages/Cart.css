@@ -218,3 +218,67 @@
     width: 100%;
   }
 }
+
+/* Payment Success Animation */
+.payment-success {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.success-animation {
+  animation: successPulse 1.5s ease-in-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.payment-success .alert {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.payment-success h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  animation: slideInDown 0.5s ease-out 0.3s both;
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.payment-success .btn {
+  animation: fadeInUp 0.5s ease-out 0.6s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

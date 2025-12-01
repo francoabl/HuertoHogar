@@ -1,10 +1,86 @@
-import { Container, Row, Col, Button, Card, Table, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Container, Row, Col, Button, Card, Table, Form, Alert } from 'react-bootstrap'
+import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 import './Cart.css'
 
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity, clearCart, getCartTotal } = useCart()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false)
+
+  useEffect(() => {
+    // Verificar si venimos de un pago exitoso
+    const paymentSuccess = searchParams.get('payment')
+    if (paymentSuccess === 'success') {
+      setShowSuccessMessage(true)
+      
+      // Limpiar el parámetro de la URL después de 5 segundos
+      setTimeout(() => {
+        setShowSuccessMessage(false)
+        navigate('/carrito', { replace: true })
+      }, 8000)
+    }
+  }, [searchParams, navigate])
+
+  if (showSuccessMessage) {
+    return (
+      <div className="cart-page">
+        <Container>
+          <div className="payment-success text-center py-5">
+            <div className="success-animation mb-4">
+              <i className="fas fa-check-circle fa-5x text-success"></i>
+            </div>
+            <h2 className="text-success mb-3">¡Pago Exitoso!</h2>
+            <Alert variant="success" className="mt-4 p-4">
+              <h5>
+                <i className="fas fa-check-circle me-2"></i>
+                Tu pago ha sido procesado correctamente
+              </h5>
+              <hr />
+              <p className="mb-2">
+                <i className="fas fa-envelope me-2"></i>
+                Recibirás un correo de confirmación con los detalles de tu pedido
+              </p>
+              <p className="mb-0">
+                <i className="fas fa-truck me-2"></i>
+                Puedes ver el estado de tu pedido en tu perfil
+              </p>
+            </Alert>
+            
+            <div className="mt-4">
+              <Button 
+                as={Link} 
+                to="/perfil" 
+                variant="success" 
+                size="lg" 
+                className="me-3"
+              >
+                <i className="fas fa-user me-2"></i>
+                Ver Mis Pedidos
+              </Button>
+              <Button 
+                as={Link} 
+                to="/productos" 
+                variant="outline-success" 
+                size="lg"
+              >
+                <i className="fas fa-shopping-basket me-2"></i>
+                Seguir Comprando
+              </Button>
+            </div>
+
+            <div className="mt-4">
+              <small className="text-muted">
+                Redirigiendo automáticamente en unos segundos...
+              </small>
+            </div>
+          </div>
+        </Container>
+      </div>
+    )
+  }
 
   if (cart.length === 0) {
     return (

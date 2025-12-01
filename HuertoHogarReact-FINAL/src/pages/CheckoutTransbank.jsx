@@ -84,10 +84,10 @@ const CheckoutTransbank = () => {
         setTransactionDetails(response)
         setPaymentSuccess(true)
 
-        // Redirigir al perfil después de 5 segundos
+        // Redirigir al carrito con mensaje de éxito después de 3 segundos
         setTimeout(() => {
-          navigate('/perfil')
-        }, 5000)
+          navigate('/carrito?payment=success')
+        }, 3000)
       } else {
         setError(`Pago rechazado. Código: ${response.responseCode}. Por favor intenta nuevamente.`)
       }
